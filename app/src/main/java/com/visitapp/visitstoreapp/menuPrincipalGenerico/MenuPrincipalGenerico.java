@@ -31,9 +31,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.visitapp.visitstoreapp.R;
+import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.domain.productos.Producto;
 import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
+import com.visitapp.visitstoreapp.domain.usuarios.UsuarioParametros;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentProductosDemo;
 //import com.google.firebase.database.DatabaseReference;
@@ -163,6 +165,12 @@ public class MenuPrincipalGenerico extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_slideshow) {
+            UsuarioParametros usuarioParametros = ((VariablesGlobales) this.getApplication()).getUsuarioParametros();
+            System.out.println("MOSTRAR VARIABLE GLOBAL:");
+            System.out.println("_ID: "+usuarioParametros.get_id());
+            System.out.println("NOMBRE: "+usuarioParametros.getNombre());
+            System.out.println("EMAIL: "+usuarioParametros.getEmail());
+            System.out.println("NIVEL: "+usuarioParametros.getNivel_id());
 
         } else if (id == R.id.nav_manage) {
 
