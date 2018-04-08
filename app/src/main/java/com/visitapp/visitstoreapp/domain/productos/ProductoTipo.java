@@ -1,19 +1,18 @@
 package com.visitapp.visitstoreapp.domain.productos;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
-
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-public class Producto{
+public class ProductoTipo {
     UUID _id = UUID.randomUUID();
     String descripcion;
     String imagen;
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
+    List<Producto> productos;
 
-    public Producto() {
+    public ProductoTipo() {
     }
 
     public UUID get_id() {
@@ -36,6 +35,10 @@ public class Producto{
         return fechaModificacion;
     }
 
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -46,5 +49,9 @@ public class Producto{
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 }

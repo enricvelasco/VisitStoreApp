@@ -1,5 +1,8 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +34,8 @@ import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.domain.productos.Producto;
 import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentPrincipal;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentProductosDemo;
 //import com.google.firebase.database.DatabaseReference;
 //import com.google.firebase.database.FirebaseDatabase;
 
@@ -64,13 +69,13 @@ public class MenuPrincipalGenerico extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        generador = findViewById(R.id.buttonGenerarDatos);
+        /*generador = findViewById(R.id.buttonGenerarDatos);
         generador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 generarDatos();
             }
-        });
+        });*/
         //BUTTONS
         //findViewById(R.id.buttonGenerarDatos).setOnClickListener((View.OnClickListener) this);
 
@@ -92,55 +97,7 @@ public class MenuPrincipalGenerico extends AppCompatActivity
         });*/
     }
 
-    private void generarDatos() {
-        List<Producto> productosTienda1 = new ArrayList<>();
-        List<Producto> productosTienda2 = new ArrayList<>();
-        List<Producto> productosTienda3 = new ArrayList<>();
 
-        for(int i=0; i<60; i++){
-            Producto p = new Producto();
-            p.setDescripcion("Producto_"+i);
-            p.setImagen("imagen_"+i);
-            if(i<41){
-                productosTienda1.add(p);
-            }else if(i>41 && i<51){
-                productosTienda2.add(p);
-            }else if(i>54){
-                productosTienda3.add(p);
-            }
-        }
-
-        List<Tienda> listaTiendas1 = new ArrayList<>();
-        //List<Tienda> listaTiendas2 = new ArrayList<>();
-
-        for(int i=0; i<3; i++){
-            Tienda t = new Tienda();
-            t.setDireccion("Direccion_"+i);
-            t.setNombre("NombreTienda_"+i);
-            t.setObservaciones("ObservacionesTienda_"+i);
-            t.setUbicacion("UbicacionTienda:"+i);
-            if(i==0){
-                t.setProductos(productosTienda1);
-                listaTiendas1.add(t);
-            }else if(i==1){
-                t.setProductos(productosTienda2);
-                listaTiendas1.add(t);
-            }else if(i==2){
-                t.setProductos(productosTienda3);
-                listaTiendas1.add(t);
-            }
-        }
-
-        Asociacion a = new Asociacion();
-        a.setNombre("Asociacion_1");
-        a.setObservaciones("observaciones asociacion 1");
-        a.setTiendas(listaTiendas1);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("asociaciones2");
-        myRef.setValue(a);
-        //myRef.push().setValue(a);
-    }
 
     /*@Override
     public void onStart() {
@@ -192,7 +149,18 @@ public class MenuPrincipalGenerico extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentPrincipal fragment = new FragmentPrincipal();
+            fragmentTransaction.replace(R.id.fragmentPrincipal, fragment);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_gallery) {
+            ///FragmentPrincipal f1 = findViewById(R.id.fragmentPrincipal);
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentProductosDemo fragment = new FragmentProductosDemo();
+            fragmentTransaction.replace(R.id.fragmentPrincipal, fragment);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_slideshow) {
 
