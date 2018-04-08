@@ -42,6 +42,10 @@ public class PantallaLogIn extends Activity implements
         buttonLogIn = findViewById(R.id.buttonSignIn);
         buttonLogIn.setEnabled(false);
         //detectar si hay email y password para activar el boton de login
+
+        // [START initialize_auth]
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
         inputEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -49,6 +53,7 @@ public class PantallaLogIn extends Activity implements
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("INSERTO TEXTO");
                 activarDesactivarBoton(inputPassword.getText().toString(), inputEmail.getText().toString(), buttonLogIn);
             }
 
@@ -73,12 +78,18 @@ public class PantallaLogIn extends Activity implements
         });
 
         //BUTTONS
-        findViewById(R.id.buttonLogIn).setOnClickListener((View.OnClickListener) this);
+        //findViewById(R.id.buttonLogIn).setOnClickListener(this);
         findViewById(R.id.linkCreateNewUser).setOnClickListener(this);
 
-        // [START initialize_auth]
-        mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
+        buttonLogIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("HACE EL CLICK");
+                signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
+            }
+        });
+
+
 
     }
 
@@ -101,12 +112,15 @@ public class PantallaLogIn extends Activity implements
 
     @Override
     public void onClick(View v) {
+        System.out.println("ON CLICK");
         int i = v.getId();
         if(i == R.id.buttonLogIn){
             //hacer la peticion para loguearse
+            System.out.println("BUSCA HACER EL LOGIN");
             signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
         }else if(i == R.id.linkCreateNewUser){
             //crear nuevo usuario
+            System.out.println("HABRIA QUE CREAR NUEVO USUARIO");
         }
     }
 
