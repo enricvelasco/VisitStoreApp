@@ -2,6 +2,7 @@ package com.visitapp.visitstoreapp;
 
 import android.app.Application;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.visitapp.visitstoreapp.domain.usuarios.UsuarioParametros;
 
 public class VariablesGlobales extends Application{
@@ -14,4 +15,6 @@ public class VariablesGlobales extends Application{
     public void setUsuarioParametros(UsuarioParametros usuarioParametros) {
         this.usuarioParametros = usuarioParametros;
     }
+
+
 }

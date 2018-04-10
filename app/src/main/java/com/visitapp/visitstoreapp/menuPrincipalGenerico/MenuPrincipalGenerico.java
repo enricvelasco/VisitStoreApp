@@ -36,6 +36,7 @@ import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.domain.productos.Producto;
 import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
 import com.visitapp.visitstoreapp.domain.usuarios.UsuarioParametros;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentCapturaCamaraMenu;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentProductosDemo;
 //import com.google.firebase.database.DatabaseReference;
@@ -173,6 +174,11 @@ public class MenuPrincipalGenerico extends AppCompatActivity
             System.out.println("NIVEL: "+usuarioParametros.getNivel_id());
 
         } else if (id == R.id.nav_manage) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentCapturaCamaraMenu fragment = new FragmentCapturaCamaraMenu();
+            fragmentTransaction.replace(R.id.fragmentPrincipal, fragment);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_share) {
 
