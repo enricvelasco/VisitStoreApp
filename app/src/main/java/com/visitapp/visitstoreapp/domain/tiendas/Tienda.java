@@ -9,19 +9,22 @@ import java.util.UUID;
 
 public class Tienda{
 
-    UUID _id = UUID.randomUUID();
+    String _id = UUID.randomUUID().toString();
     String nombre;
     String observaciones;
     String ubicacion;
     String direccion;
+    String logo;
     List<Producto> productos;
+    Asociacion asociacion;
+
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
 
     public Tienda() {
     }
 
-    public UUID get_id() {
+    public String get_id() {
         return _id;
     }
 
@@ -75,5 +78,21 @@ public class Tienda{
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public Asociacion getAsociacion() {
+        return asociacion;
+    }
+
+    public void setAsociacion(Asociacion asociacion) {
+        this.asociacion = asociacion;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }

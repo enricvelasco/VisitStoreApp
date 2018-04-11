@@ -10,7 +10,9 @@ public class Asociacion {
     UUID _id = UUID.randomUUID();
     String nombre;
     String observaciones;
-    List<Tienda> tiendas;
+    //List<Tienda> tiendas;
+    AsociacionParametrosConfig asociacionParametrosConfig;
+
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
 
@@ -29,9 +31,9 @@ public class Asociacion {
         return observaciones;
     }
 
-    public List<Tienda> getTiendas() {
+    /*public List<Tienda> getTiendas() {
         return tiendas;
-    }
+    }*/
 
     public Date getFechaCreacion() {
         return fechaCreacion;
@@ -49,11 +51,19 @@ public class Asociacion {
         this.observaciones = observaciones;
     }
 
-    public void setTiendas(List<Tienda> tiendas) {
+    /*public void setTiendas(List<Tienda> tiendas) {
         this.tiendas = tiendas;
-    }
+    }*/
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public AsociacionParametrosConfig getAsociacionParametrosConfig() {
+        return asociacionParametrosConfig;
+    }
+
+    public void setAsociacionParametrosConfig(AsociacionParametrosConfig asociacionParametrosConfig) {
+        this.asociacionParametrosConfig = asociacionParametrosConfig;
     }
 }

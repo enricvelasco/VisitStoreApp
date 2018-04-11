@@ -34,16 +34,16 @@ public class FragmentProductosDemo extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         botonGenerarDemo = view.findViewById(R.id.buttonGenerarDataDemo);
-        botonGenerarDemo.setOnClickListener(new View.OnClickListener() {
+        /*botonGenerarDemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 generarDatos();
             }
-        });
+        });*/
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void generarDatos() {
+    /*private void generarDatos() {
         List<Producto> productosTienda1 = new ArrayList<>();
         List<Producto> productosTienda2 = new ArrayList<>();
         List<Producto> productosTienda3 = new ArrayList<>();
@@ -93,6 +93,6 @@ public class FragmentProductosDemo extends Fragment{
         DatabaseReference myRef = database.getReference("asociaciones2");
         myRef.setValue(asociaciones);
         //myRef.push().setValue(a);
-    }
+    }*/
 
 }
