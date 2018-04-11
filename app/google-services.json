@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "596523042160",
+    "firebase_url": "https://visitstoreapp.firebaseio.com",
+    "project_id": "visitstoreapp",
+    "storage_bucket": "visitstoreapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596523042160:android:33ac49fd88e78994",
+        "android_client_info": {
+          "package_name": "com.visitapp.visitstoreapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596523042160-9c2mdc41r7dr0av36ubv49g2k8ediknu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.visitapp.visitstoreapp",
+            "certificate_hash": "afb767855ab93184ce12c292606879248e942e66"
+          }
+        },
+        {
+          "client_id": "596523042160-emtnmfsv5gpgq3hq4ihsjqsq5nrmeacr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWK89FaterdiiaWxlN_CIhL7cPUpuXHnQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596523042160-emtnmfsv5gpgq3hq4ihsjqsq5nrmeacr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
