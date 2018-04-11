@@ -42,4 +42,24 @@ public class AsociacionController {
 
         return listadoRespuesta;
     }
+
+    public Asociacion getById(String id){
+        Asociacion asociacionResp = new Asociacion();
+
+
+        return asociacionResp;
+    }
+
+
+    public void save(Asociacion asociacion){
+
+    }
+
+    public void update(Asociacion asociacion){
+
+    }
+
+    public void delete(Asociacion asociacion){
+        
+    }
 }
