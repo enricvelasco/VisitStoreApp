@@ -1,27 +1,20 @@
-package com.visitapp.visitstoreapp.domain.tiendas;
-
-import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
-import com.visitapp.visitstoreapp.domain.productos.Producto;
+package com.visitapp.visitstoreapp.sistema.domain.asociaciones;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-public class Tienda{
-
+public class Asociacion {
     String _id = UUID.randomUUID().toString();
     String nombre;
     String observaciones;
-    String ubicacion;
-    String direccion;
     String logo;
-    List<Producto> productos;
-    Asociacion asociacion;
+    //List<Tienda> tiendas;
+    AsociacionParametrosConfig asociacionParametrosConfig;
 
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
 
-    public Tienda() {
+    public Asociacion() {
     }
 
     public String get_id() {
@@ -36,17 +29,9 @@ public class Tienda{
         return observaciones;
     }
 
-    public String getUbicacion() {
-        return ubicacion;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public List<Producto> getProductos() {
-        return productos;
-    }
+    /*public List<Tienda> getTiendas() {
+        return tiendas;
+    }*/
 
     public Date getFechaCreacion() {
         return fechaCreacion;
@@ -64,28 +49,20 @@ public class Tienda{
         this.observaciones = observaciones;
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
-    }
+    /*public void setTiendas(List<Tienda> tiendas) {
+        this.tiendas = tiendas;
+    }*/
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public Asociacion getAsociacion() {
-        return asociacion;
+    public AsociacionParametrosConfig getAsociacionParametrosConfig() {
+        return asociacionParametrosConfig;
     }
 
-    public void setAsociacion(Asociacion asociacion) {
-        this.asociacion = asociacion;
+    public void setAsociacionParametrosConfig(AsociacionParametrosConfig asociacionParametrosConfig) {
+        this.asociacionParametrosConfig = asociacionParametrosConfig;
     }
 
     public String getLogo() {

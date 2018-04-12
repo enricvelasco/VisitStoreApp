@@ -1,7 +1,7 @@
-package com.visitapp.visitstoreapp.domain.productos;
+package com.visitapp.visitstoreapp.sistema.domain.productos;
 
-import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
-import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
+import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
+import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
 
 public class ProductoVisita extends Producto {
     Asociacion asociacion;

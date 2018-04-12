@@ -1,4 +1,4 @@
-package com.visitapp.visitstoreapp.domain.productos;
+package com.visitapp.visitstoreapp.sistema.domain.productos;
 
 import java.util.Date;
 import java.util.List;

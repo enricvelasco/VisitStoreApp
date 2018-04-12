@@ -1,4 +1,4 @@
-package com.visitapp.visitstoreapp.domain.usuarios;
+package com.visitapp.visitstoreapp.sistema.domain.usuarios;
 
 import java.util.List;
 import java.util.UUID;

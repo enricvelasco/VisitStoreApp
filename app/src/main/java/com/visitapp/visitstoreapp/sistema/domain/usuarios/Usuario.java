@@ -1,4 +1,4 @@
-package com.visitapp.visitstoreapp.domain.usuarios;
+package com.visitapp.visitstoreapp.sistema.domain.usuarios;
 
 public class Usuario {
     String _id;

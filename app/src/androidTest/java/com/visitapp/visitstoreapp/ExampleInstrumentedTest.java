@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.visitapp.visitstoreapp.controllers.asociaciones.AsociacionController;
-import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
+import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
+import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

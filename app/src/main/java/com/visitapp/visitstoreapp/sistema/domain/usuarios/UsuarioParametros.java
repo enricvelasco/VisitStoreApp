@@ -1,6 +1,4 @@
-package com.visitapp.visitstoreapp.domain.usuarios;
-
-import java.util.UUID;
+package com.visitapp.visitstoreapp.sistema.domain.usuarios;
 
 public class UsuarioParametros extends Usuario{
 

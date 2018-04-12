@@ -1,9 +1,5 @@
-package com.visitapp.visitstoreapp.domain.productos;
+package com.visitapp.visitstoreapp.sistema.domain.productos;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;

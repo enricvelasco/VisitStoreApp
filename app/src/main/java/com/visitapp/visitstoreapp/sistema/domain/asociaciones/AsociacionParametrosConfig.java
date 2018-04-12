@@ -1,4 +1,4 @@
-package com.visitapp.visitstoreapp.domain.asociaciones;
+package com.visitapp.visitstoreapp.sistema.domain.asociaciones;
 
 public class AsociacionParametrosConfig {
     String logo;

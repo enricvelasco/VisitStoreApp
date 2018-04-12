@@ -4,21 +4,13 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.visitapp.visitstoreapp.R;
-import com.visitapp.visitstoreapp.controllers.asociaciones.AsociacionController;
-import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
-import com.visitapp.visitstoreapp.domain.productos.Producto;
-import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
+import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
 
 public class FragmentProductosDemo extends Fragment{
     Button botonGenerarDemo;
