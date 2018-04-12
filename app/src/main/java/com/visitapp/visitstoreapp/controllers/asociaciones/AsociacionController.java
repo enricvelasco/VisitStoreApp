@@ -51,8 +51,9 @@ public class AsociacionController {
     }
 
 
-    public void save(Asociacion asociacion){
-
+    public void save(/*Asociacion asociacion*/){
+        System.out.println("HACE EL SAVE");
+        myRef.child(asociacion.get_id()).setValue(asociacion);
     }
 
     public void update(Asociacion asociacion){
@@ -60,6 +61,6 @@ public class AsociacionController {
     }
 
     public void delete(Asociacion asociacion){
-        
+
     }
 }

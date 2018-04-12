@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.visitapp.visitstoreapp.R;
+import com.visitapp.visitstoreapp.controllers.asociaciones.AsociacionController;
 import com.visitapp.visitstoreapp.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.domain.productos.Producto;
 import com.visitapp.visitstoreapp.domain.tiendas.Tienda;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class FragmentProductosDemo extends Fragment{
     Button botonGenerarDemo;
+    Button generarAsociaciones;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +36,13 @@ public class FragmentProductosDemo extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         botonGenerarDemo = view.findViewById(R.id.buttonGenerarDataDemo);
+        generarAsociaciones = view.findViewById(R.id.buttonGenerarAsociaciones);
+        generarAsociaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcGenerarAsociaciones();
+            }
+        });
         /*botonGenerarDemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +50,15 @@ public class FragmentProductosDemo extends Fragment{
             }
         });*/
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void funcGenerarAsociaciones() {
+        Asociacion a1 = new Asociacion();
+        a1.setNombre("Asociación 1");
+        a1.setObservaciones("primera Asociacion creada");
+        a1.setLogo("pendiente/url");
+        AsociacionController ac1 = new AsociacionController(a1);
+        ac1.save();
     }
 
     /*private void generarDatos() {

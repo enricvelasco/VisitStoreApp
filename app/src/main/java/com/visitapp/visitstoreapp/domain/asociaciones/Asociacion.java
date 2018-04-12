@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class Asociacion {
-    UUID _id = UUID.randomUUID();
+    String _id = UUID.randomUUID().toString();
     String nombre;
     String observaciones;
+    String logo;
     //List<Tienda> tiendas;
     AsociacionParametrosConfig asociacionParametrosConfig;
 
@@ -19,7 +20,7 @@ public class Asociacion {
     public Asociacion() {
     }
 
-    public UUID get_id() {
+    public String get_id() {
         return _id;
     }
 
@@ -65,5 +66,13 @@ public class Asociacion {
 
     public void setAsociacionParametrosConfig(AsociacionParametrosConfig asociacionParametrosConfig) {
         this.asociacionParametrosConfig = asociacionParametrosConfig;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }
