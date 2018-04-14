@@ -1,8 +1,5 @@
 package com.visitapp.visitstoreapp.sistema.domain.asociaciones;
 
-import com.visitapp.visitstoreapp.VariablesGlobales;
-import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
-import com.visitapp.visitstoreapp.sistema.domain.usuarios.Usuario;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 
 import java.util.Date;
@@ -12,31 +9,18 @@ import java.util.UUID;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
-public class Asociacion {
-    String _id = UUID.randomUUID().toString();
+public class DistritoAsociacion {
     String nombre;
     String observaciones;
-    String distrito_id;
-    String direccion;
-    String telefono;
-    String logo;
-    Map tiendas;
-    AsociacionParametrosConfig asociacionParametrosConfig;
+    Map asociaciones;
 
+    String _id = UUID.randomUUID().toString();
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
     UsuarioParametros usuarioCreacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
     UsuarioParametros usuarioModificacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
 
-    public Asociacion() {
-    }
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
+    public DistritoAsociacion() {
     }
 
     public String getNombre() {
@@ -55,44 +39,12 @@ public class Asociacion {
         this.observaciones = observaciones;
     }
 
-    public String getDistrito_id() {
-        return distrito_id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setDistrito_id(String distrito_id) {
-        this.distrito_id = distrito_id;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public AsociacionParametrosConfig getAsociacionParametrosConfig() {
-        return asociacionParametrosConfig;
-    }
-
-    public void setAsociacionParametrosConfig(AsociacionParametrosConfig asociacionParametrosConfig) {
-        this.asociacionParametrosConfig = asociacionParametrosConfig;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public Date getFechaCreacion() {
@@ -127,11 +79,11 @@ public class Asociacion {
         this.usuarioModificacion = usuarioModificacion;
     }
 
-    public Map getTiendas() {
-        return tiendas;
+    public Map getAsociaciones() {
+        return asociaciones;
     }
 
-    public void setTiendas(Map tiendas) {
-        this.tiendas = tiendas;
+    public void setAsociaciones(Map asociaciones) {
+        this.asociaciones = asociaciones;
     }
 }

@@ -1,22 +1,22 @@
-package com.visitapp.visitstoreapp.sistema.controllers.productos;
+package com.visitapp.visitstoreapp.sistema.controllers.tiendas;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
+import com.visitapp.visitstoreapp.sistema.domain.tiendas.TiendaSector;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.util.Date;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
-public class ProductoController {
+public class TiendaSectorController {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("productos");
+    DatabaseReference myRef = database.getReference("tiendasSectores");
 
-    public ProductoController() {
+    public TiendaSectorController() {
     }
 
     public void getList(final OnGetDataListener listener){
@@ -34,13 +34,12 @@ public class ProductoController {
         });
     }
 
-    public void read(Producto producto, final OnGetDataListener listener){
+    public void read(TiendaSector tiendaSector, final OnGetDataListener listener){
         listener.onStart();
-        myRef.child(producto.get_id()).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child(tiendaSector.get_id()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);
-
             }
 
             @Override
@@ -51,24 +50,24 @@ public class ProductoController {
     }
 
 
-    public void save(Producto producto){
+    public void save(TiendaSector tiendaSector){
         System.out.println("HACE EL SAVE");
-        myRef.child(producto.get_id()).setValue(producto);
+        myRef.child(tiendaSector.get_id()).setValue(tiendaSector);
     }
 
-    public void update(Producto producto){
+    public void update(TiendaSector tiendaSector){
 
         try {
-            producto.setFechaModificacion(new Date());
-            producto.setUsuarioModificacion(USUARIO_ACTUAL.getParametrosUsuarioActual());
-            myRef.child(producto.get_id()).setValue(producto);
+            tiendaSector.setFechaModificacion(new Date());
+            tiendaSector.setUsuarioModificacion(USUARIO_ACTUAL.getParametrosUsuarioActual());
+            myRef.child(tiendaSector.get_id()).setValue(tiendaSector);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void delete(Producto producto){
-        myRef.child(producto.get_id()).removeValue();
+    public void delete(TiendaSector tiendaSector){
+        myRef.child(tiendaSector.get_id()).removeValue();
     }
 }

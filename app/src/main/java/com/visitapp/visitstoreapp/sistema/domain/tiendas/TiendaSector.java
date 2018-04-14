@@ -1,32 +1,23 @@
-package com.visitapp.visitstoreapp.sistema.domain.productos;
+package com.visitapp.visitstoreapp.sistema.domain.tiendas;
 
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
-public class Producto{
+public class TiendaSector {
+
     String nombre;
-    String imagen;
-    String codigo;
-    String codigoBarras;
-    String codigoQR;
-    String productosTipo_id;
-    Map productosComposicion;
-    Float precio;
+    String observaciones;
+
 
     String _id = UUID.randomUUID().toString();
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
     UsuarioParametros usuarioCreacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
     UsuarioParametros usuarioModificacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
-
-    public Producto() {
-    }
 
     public String getNombre() {
         return nombre;
@@ -36,28 +27,12 @@ public class Producto{
         this.nombre = nombre;
     }
 
-    public String getImagen() {
-        return imagen;
+    public String getObservaciones() {
+        return observaciones;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public String getProductosTipo_id() {
-        return productosTipo_id;
-    }
-
-    public void setProductosTipo_id(String productosTipo_id) {
-        this.productosTipo_id = productosTipo_id;
-    }
-
-    public Map getProductosComposicion() {
-        return productosComposicion;
-    }
-
-    public void setProductosComposicion(Map productosComposicion) {
-        this.productosComposicion = productosComposicion;
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
     public String get_id() {
@@ -98,37 +73,5 @@ public class Producto{
 
     public void setUsuarioModificacion(UsuarioParametros usuarioModificacion) {
         this.usuarioModificacion = usuarioModificacion;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getCodigoBarras() {
-        return codigoBarras;
-    }
-
-    public void setCodigoBarras(String codigoBarras) {
-        this.codigoBarras = codigoBarras;
-    }
-
-    public String getCodigoQR() {
-        return codigoQR;
-    }
-
-    public void setCodigoQR(String codigoQR) {
-        this.codigoQR = codigoQR;
-    }
-
-    public Float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Float precio) {
-        this.precio = precio;
     }
 }

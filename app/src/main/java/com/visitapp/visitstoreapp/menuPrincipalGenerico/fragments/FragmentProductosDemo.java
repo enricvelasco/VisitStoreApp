@@ -8,13 +8,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
+import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.DistritoAsociacionController;
+import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoController;
+import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoTipoController;
+import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
 import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
+import com.visitapp.visitstoreapp.sistema.domain.asociaciones.DistritoAsociacion;
+import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
+import com.visitapp.visitstoreapp.sistema.domain.productos.ProductoTipo;
+import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
+import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FragmentProductosDemo extends Fragment{
     Button botonGenerarDemo;
     Button generarAsociaciones;
+    Button generarTiendas;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -28,81 +50,225 @@ public class FragmentProductosDemo extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         botonGenerarDemo = view.findViewById(R.id.buttonGenerarDataDemo);
-        generarAsociaciones = view.findViewById(R.id.buttonGenerarAsociaciones);
+        /*generarAsociaciones = view.findViewById(R.id.buttonGenerarAsociaciones);
         generarAsociaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 funcGenerarAsociaciones();
             }
         });
-        /*botonGenerarDemo.setOnClickListener(new View.OnClickListener() {
+
+        generarTiendas = view.findViewById(R.id.buttonGenerarTiendas);
+        generarTiendas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                generarDatos();
+                funcGenerarTiendas();
             }
         });*/
+
+
+        botonGenerarDemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //generarDatos();
+                generarDemo();
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void funcGenerarAsociaciones() {
-        Asociacion a1 = new Asociacion();
-        a1.setNombre("Asociación 1");
-        a1.setObservaciones("primera Asociacion creada");
-        a1.setLogo("pendiente/url");
-        AsociacionController ac1 = new AsociacionController(a1);
-        ac1.save();
+    private void funcGenerarTiendas() {
+        //Tiendas Asociacion Comerç i arts
+        /*Tienda t1 = new Tienda();
+        t1.setNif();
+        t1.setNombreEmpresa();
+        t1.setNombreNombrePublico();
+        t1.setAsociacion();*/
+
+
     }
 
-    /*private void generarDatos() {
-        List<Producto> productosTienda1 = new ArrayList<>();
-        List<Producto> productosTienda2 = new ArrayList<>();
-        List<Producto> productosTienda3 = new ArrayList<>();
+    private void generarDemo(){
 
-        for(int i=0; i<60; i++){
-            Producto p = new Producto();
-            p.setDescripcion("Producto_"+i);
-            p.setImagen("imagen_"+i);
-            if(i<41){
-                productosTienda1.add(p);
-            }else if(i>41 && i<51){
-                productosTienda2.add(p);
-            }else if(i>54){
-                productosTienda3.add(p);
-            }
+        myRef.child("distritosAsociaciones").removeValue();
+        myRef.child("asociaciones").removeValue();
+        myRef.child("tiendas").removeValue();
+        myRef.child("productosTipo").removeValue();
+        myRef.child("productos").removeValue();
+
+        //funcTiposDeProducto();
+
+        DistritoAsociacion distritoAsociacion = new DistritoAsociacion();
+        distritoAsociacion.setNombre("Gràcia");
+        distritoAsociacion.setObservaciones("Districte de la zona de Gràcia");
+        DistritoAsociacionController dc = new DistritoAsociacionController();
+        dc.save(distritoAsociacion);
+
+        Map asociacionesD1 = funcGenerarAsociaciones(distritoAsociacion);
+        distritoAsociacion.setAsociaciones(asociacionesD1);
+        dc.update(distritoAsociacion);
+
+
+    }
+
+    private Map funcGenerarAsociaciones(DistritoAsociacion distritoAsociacion) {
+
+        Map object = new HashMap();
+        AsociacionController ac1 = new AsociacionController();
+
+        Asociacion a1 = new Asociacion();
+        a1.setNombre("Associació de Comerç i Arts de la Riera Sant Miquel i Voltants");
+        a1.setObservaciones("");
+        a1.setDireccion("C Riera de Sant Miquel 29");
+        a1.setTelefono("635989470");
+        a1.setLogo("pendiente/url");
+        a1.setDistrito_id(distritoAsociacion.get_id());
+        //arrayTiendasDistrito1.add(a1);
+        object.put(a1.get_id(), a1);
+
+        Asociacion a2 = new Asociacion();
+        a2.setNombre("Associació de Comerciants Gràcia Centre");
+        a2.setObservaciones("");
+        a2.setDireccion("C Bonavista 19");
+        a2.setTelefono("609035162");
+        a2.setLogo("pendiente/url");
+        a2.setDistrito_id(distritoAsociacion.get_id());
+        //arrayTiendasDistrito1.add(a2);
+        object.put(a2.get_id(), a2);
+
+        Asociacion a3 = new Asociacion();
+        a3.setNombre("Associació Comerciants Travessera de Gràcia Centre i Puigmartí");
+        a3.setObservaciones("");
+        a3.setDireccion("Trav Gràcia 191");
+        a3.setTelefono("932135604");
+        a3.setLogo("pendiente/url");
+        a3.setDistrito_id(distritoAsociacion.get_id());
+        //arrayTiendasDistrito1.add(a3);
+        object.put(a3.get_id(), a3);
+
+
+        Asociacion a5 = new Asociacion();
+        a5.setNombre("Associació de Comerciants Torrijos La Nova de Baix");
+        a5.setObservaciones("");
+        a5.setDireccion(" C Torrijos 28");
+        a5.setTelefono("");
+        a5.setLogo("pendiente/url");
+        a5.setDistrito_id(distritoAsociacion.get_id());
+        //arrayTiendasDistrito1.add(a5);
+        object.put(a5.get_id(), a5);
+
+
+        Asociacion a4 = new Asociacion();
+        a4.setNombre("Associació de Comerciants de Travessera de Dalt");
+        a4.setObservaciones("");
+        a4.setDireccion("Trav Dalt 40");
+        a4.setTelefono("606608669");
+        a4.setLogo("pendiente/url");
+        a4.setDistrito_id(distritoAsociacion.get_id());
+        //arrayTiendasDistrito1.add(a4);
+        object.put(a4.get_id(), a4);
+
+
+
+        Map tiendadasAsoc1 = funcionGenerarTiendas(a1,1,10);
+        Map tiendadasAsoc2 = funcionGenerarTiendas(a2,2,6);
+        Map tiendadasAsoc3 = funcionGenerarTiendas(a3,3,4);
+        Map tiendadasAsoc4 = funcionGenerarTiendas(a4,4,5);
+        Map tiendadasAsoc5 = funcionGenerarTiendas(a5,5,2);
+
+        a1.setTiendas(tiendadasAsoc1);
+        a2.setTiendas(tiendadasAsoc2);
+        a3.setTiendas(tiendadasAsoc3);
+        a4.setTiendas(tiendadasAsoc4);
+        a5.setTiendas(tiendadasAsoc5);
+
+        ac1.save(a1);
+        ac1.save(a2);
+        ac1.save(a3);
+        ac1.save(a4);
+        ac1.save(a5);
+
+        return object;
+    }
+
+    private Map funcionGenerarTiendas(Asociacion a1, int numBase, int cantidad) {
+
+        Map object = new HashMap();
+        TiendaController tiendaController = new TiendaController();
+
+        for(int i=0;i<cantidad;i++){
+            Tienda tienda = new Tienda();
+            tienda.setNif("00"+numBase+i);
+            tienda.setNombreFiscal("Local Fiscal "+numBase+i);
+            tienda.setNombreNombrePublico("Tienda "+numBase+i);
+            tienda.setAsociacion_id(a1.get_id());
+
+
+            Map productosTipo = funcTiposDeProducto(tienda);
+            tienda.setProductosTipo(productosTipo);
+            tiendaController.save(tienda);
+            //Map productos = funcGenerarProductos(tienda, numBase, 5);
+
+            object.put(tienda.get_id(),tienda);
+        }
+        return object;
+    }
+
+    private Map funcGenerarProductos(ProductoTipo productoTipo, int numBase, int cantidad) {
+        ProductoController productoController = new ProductoController();
+        Map object = new HashMap();
+        for(int i=0;i<cantidad;i++){
+            Producto producto = new Producto();
+            producto.setNombre(productoTipo.getDescripcion()+numBase+i);
+            producto.setCodigo("00"+numBase+i);
+
+            productoController.save(producto);
+
+            object.put(producto.get_id(),producto);
         }
 
-        List<Tienda> listaTiendas1 = new ArrayList<>();
-        //List<Tienda> listaTiendas2 = new ArrayList<>();
+        return object;
+    }
 
-        for(int i=0; i<3; i++){
-            Tienda t = new Tienda();
-            t.setDireccion("Direccion_"+i);
-            t.setNombre("NombreTienda_"+i);
-            t.setObservaciones("ObservacionesTienda_"+i);
-            t.setUbicacion("UbicacionTienda:"+i);
-            if(i==0){
-                t.setProductos(productosTienda1);
-                listaTiendas1.add(t);
-            }else if(i==1){
-                t.setProductos(productosTienda2);
-                listaTiendas1.add(t);
-            }else if(i==2){
-                t.setProductos(productosTienda3);
-                listaTiendas1.add(t);
-            }
-        }
+    private Map funcTiposDeProducto(Tienda tienda) {
+        Map object = new HashMap();
+        ProductoTipoController productoTipoController = new ProductoTipoController();
+        ProductoTipo productoTipo1 = new ProductoTipo();
+        productoTipo1.setDescripcion("Camisetas");
+        productoTipo1.setTienda_id(tienda.get_id());
 
-        List<Asociacion> asociaciones = new ArrayList<>();
-        Asociacion a = new Asociacion();
-        a.setNombre("Asociacion_1");
-        a.setObservaciones("observaciones asociacion 1");
-        a.setTiendas(listaTiendas1);
-        asociaciones.add(a);
+        ProductoTipo productoTipo2 = new ProductoTipo();
+        productoTipo2.setDescripcion("Pantalones");
+        productoTipo2.setTienda_id(tienda.get_id());
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("asociaciones2");
-        myRef.setValue(asociaciones);
-        //myRef.push().setValue(a);
-    }*/
+        ProductoTipo productoTipo3 = new ProductoTipo();
+        productoTipo3.setDescripcion("Camisas");
+        productoTipo3.setTienda_id(tienda.get_id());
 
+        ProductoTipo productoTipo4 = new ProductoTipo();
+        productoTipo4.setDescripcion("Vestido Largo");
+        productoTipo4.setTienda_id(tienda.get_id());
+
+        Map productos1 = funcGenerarProductos(productoTipo1,1,12);
+        Map productos2 = funcGenerarProductos(productoTipo2,2,16);
+        Map productos3 = funcGenerarProductos(productoTipo3,3,10);
+        Map productos4 = funcGenerarProductos(productoTipo4,4,15);
+
+        productoTipo1.setProductos(productos1);
+        productoTipo2.setProductos(productos2);
+        productoTipo3.setProductos(productos3);
+        productoTipo4.setProductos(productos4);
+
+        productoTipoController.save(productoTipo1);
+        productoTipoController.save(productoTipo2);
+        productoTipoController.save(productoTipo3);
+        productoTipoController.save(productoTipo4);
+
+        object.put(productoTipo1.get_id(),productoTipo1);
+        object.put(productoTipo2.get_id(),productoTipo2);
+        object.put(productoTipo3.get_id(),productoTipo3);
+        object.put(productoTipo4.get_id(),productoTipo4);
+
+        return object;
+    }
 }

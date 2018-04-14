@@ -1,22 +1,22 @@
-package com.visitapp.visitstoreapp.sistema.controllers.productos;
+package com.visitapp.visitstoreapp.sistema.controllers.asociaciones;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
+import com.visitapp.visitstoreapp.sistema.domain.asociaciones.DistritoAsociacion;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.util.Date;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
-public class ProductoController {
+public class DistritoAsociacionController {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("productos");
+    DatabaseReference myRef = database.getReference("distritosAsociaciones");
 
-    public ProductoController() {
+    public DistritoAsociacionController() {
     }
 
     public void getList(final OnGetDataListener listener){
@@ -34,9 +34,8 @@ public class ProductoController {
         });
     }
 
-    public void read(Producto producto, final OnGetDataListener listener){
-        listener.onStart();
-        myRef.child(producto.get_id()).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void read(DistritoAsociacion distritoAsociacion, final OnGetDataListener listener){
+        myRef.child(distritoAsociacion.get_id()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);
@@ -51,24 +50,23 @@ public class ProductoController {
     }
 
 
-    public void save(Producto producto){
+    public void save(DistritoAsociacion distritoAsociacion){
         System.out.println("HACE EL SAVE");
-        myRef.child(producto.get_id()).setValue(producto);
+        myRef.child(distritoAsociacion.get_id()).setValue(distritoAsociacion);
     }
 
-    public void update(Producto producto){
-
+    public void update(DistritoAsociacion distritoAsociacion){
         try {
-            producto.setFechaModificacion(new Date());
-            producto.setUsuarioModificacion(USUARIO_ACTUAL.getParametrosUsuarioActual());
-            myRef.child(producto.get_id()).setValue(producto);
+            distritoAsociacion.setFechaModificacion(new Date());
+            distritoAsociacion.setUsuarioModificacion(USUARIO_ACTUAL.getParametrosUsuarioActual());
+            myRef.child(distritoAsociacion.get_id()).setValue(distritoAsociacion);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void delete(Producto producto){
-        myRef.child(producto.get_id()).removeValue();
+    public void delete(DistritoAsociacion distritoAsociacion){
+        myRef.child(distritoAsociacion.get_id()).removeValue();
     }
 }

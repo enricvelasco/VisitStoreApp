@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.visitapp.visitstoreapp.UsuarioActual;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.Usuario;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioNiveles;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
@@ -34,6 +35,7 @@ import java.util.UUID;
 
 public class PantallaLogIn extends Activity implements
         View.OnClickListener{
+    public static UsuarioActual USUARIO_ACTUAL;
     //Usuario
     UsuarioParametros usuarioParametros = new UsuarioParametros();
 
@@ -192,6 +194,8 @@ public class PantallaLogIn extends Activity implements
             //localizar el nivel al que corresponde
             usuarioParametros.setNivel_id(localizarNivelUsuario(usuarioParametros));
 
+            //asignar a variables globales
+            USUARIO_ACTUAL = new UsuarioActual(usuarioParametros);
             ((VariablesGlobales) this.getApplication()).setUsuarioParametros(usuarioParametros);
 
             //cargarNivelesUsuarioDemo(usuarioParametros);
