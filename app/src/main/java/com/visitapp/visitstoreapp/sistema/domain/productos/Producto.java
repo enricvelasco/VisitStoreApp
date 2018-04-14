@@ -16,7 +16,9 @@ public class Producto{
     String codigoBarras;
     String codigoQR;
     String productosTipo_id;
-    Map productosComposicion;
+    String asociacion_id;
+    String tienda_id;
+    Map productosComposicion_productos;
     Float precio;
 
     String _id = UUID.randomUUID().toString();
@@ -52,12 +54,12 @@ public class Producto{
         this.productosTipo_id = productosTipo_id;
     }
 
-    public Map getProductosComposicion() {
-        return productosComposicion;
+    public Map getProductosComposicion_productos() {
+        return productosComposicion_productos;
     }
 
-    public void setProductosComposicion(Map productosComposicion) {
-        this.productosComposicion = productosComposicion;
+    public void setProductosComposicion_productos(Map productosComposicion_productos) {
+        this.productosComposicion_productos = productosComposicion_productos;
     }
 
     public String get_id() {
@@ -130,5 +132,21 @@ public class Producto{
 
     public void setPrecio(Float precio) {
         this.precio = precio;
+    }
+
+    public String getAsociacion_id() {
+        return asociacion_id;
+    }
+
+    public void setAsociacion_id(String asociacion_id) {
+        this.asociacion_id = asociacion_id;
+    }
+
+    public String getTienda_id() {
+        return tienda_id;
+    }
+
+    public void setTienda_id(String tienda_id) {
+        this.tienda_id = tienda_id;
     }
 }

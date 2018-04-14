@@ -1,7 +1,6 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +37,7 @@ public class CardAdapter extends BaseCardAdapter{
         if(modelList==null || modelList.size()==0){
             return;
         }
-        ImageView imageView = cardview.findViewById(R.id.imageView);
+        ImageView imageView = cardview.findViewById(R.id.idImagenPerfil);
         TextView textView = cardview.findViewById(R.id.textView);
         Model model = modelList.get(position);
         textView.setText(model.getTitle());

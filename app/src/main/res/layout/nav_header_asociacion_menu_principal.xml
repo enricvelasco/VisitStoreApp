@@ -22,7 +22,7 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
-        android:id="@+id/idNombreMenuInfo"
+        android:id="@+id/idNombreAsociacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/idImagenPerfil"
@@ -32,7 +32,7 @@
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/idDireccionMenuInfo"
+        android:id="@+id/idDireccionAsociacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -42,7 +42,7 @@
         android:textSize="10sp" />
 
     <TextView
-        android:id="@+id/idTelefonoMenuInfo"
+        android:id="@+id/idTelefonoAsociacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/idImagenPerfil"

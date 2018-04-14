@@ -12,7 +12,7 @@ import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 public class DistritoAsociacion {
     String nombre;
     String observaciones;
-    Map asociaciones;
+    //Map asociaciones;
 
     String _id = UUID.randomUUID().toString();
     Date fechaCreacion = new Date();
@@ -79,11 +79,11 @@ public class DistritoAsociacion {
         this.usuarioModificacion = usuarioModificacion;
     }
 
-    public Map getAsociaciones() {
+    /*public Map getAsociaciones() {
         return asociaciones;
     }
 
     public void setAsociaciones(Map asociaciones) {
         this.asociaciones = asociaciones;
-    }
+    }*/
 }

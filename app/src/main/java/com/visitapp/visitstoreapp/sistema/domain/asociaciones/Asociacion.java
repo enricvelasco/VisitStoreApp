@@ -20,7 +20,7 @@ public class Asociacion {
     String direccion;
     String telefono;
     String logo;
-    Map tiendas;
+    //Map tiendas;
     AsociacionParametrosConfig asociacionParametrosConfig;
 
     Date fechaCreacion = new Date();
@@ -127,11 +127,11 @@ public class Asociacion {
         this.usuarioModificacion = usuarioModificacion;
     }
 
-    public Map getTiendas() {
+    /*ublic Map getTiendas() {
         return tiendas;
     }
 
     public void setTiendas(Map tiendas) {
         this.tiendas = tiendas;
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package com.visitapp.visitstoreapp.menuPrincipalGenerico;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
+import com.visitapp.visitstoreapp.login.LoginMailPassword;
+import com.visitapp.visitstoreapp.login.PantallaLogIn;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentCapturaCamaraMenu;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentPrincipal;
@@ -26,8 +31,15 @@ import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentProduc
 public class MenuPrincipalGenerico extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //private FirebaseAuth mAuth;
-    Button generador;
+    private FirebaseAuth mAuth;
+
+    //datos perfil
+    TextView nombreUsuario;
+    TextView direccionUsuario;
+    TextView telefonoUsuario;
+    //--------
+    //UsuarioParametros usuarioParametros = ((VariablesGlobales) this.getApplication()).getUsuarioParametros();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,45 +61,7 @@ public class MenuPrincipalGenerico extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*generador = findViewById(R.id.buttonGenerarDatos);
-        generador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                generarDatos();
-            }
-        });*/
-        //BUTTONS
-        //findViewById(R.id.buttonGenerarDatos).setOnClickListener((View.OnClickListener) this);
-
-        /*FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("resp");
-
-        myRef.setValue("Hello, World2!"+new Date());
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("DATOS RECIBIDOS"+dataSnapshot.getValue());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
     }
-
-
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        System.out.println("ENTRA A ON START: comprueba si el usuario esta conectado o no");
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    }*/
-
 
     @Override
     public void onBackPressed() {
@@ -103,6 +77,16 @@ public class MenuPrincipalGenerico extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_principal_generico, menu);
+
+        UsuarioParametros usuarioParametros = ((VariablesGlobales) this.getApplication()).getUsuarioParametros();
+        nombreUsuario = findViewById(R.id.idNombreMenuInfo);
+        direccionUsuario = findViewById(R.id.idDireccionMenuInfo);
+        telefonoUsuario = findViewById(R.id.idTelefonoMenuInfo);
+
+        nombreUsuario.setText(usuarioParametros.getNombre());
+        direccionUsuario.setText("---");
+        telefonoUsuario.setText("****");
+
         return true;
     }
 
@@ -114,9 +98,20 @@ public class MenuPrincipalGenerico extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_settings:
+                System.out.println("CLICK EN SETTINGS");
+                break;
+            case R.id.action_logOut:
+                System.out.println("CLICK EN LOG OUT");
+                mAuth.getInstance().signOut();
+                Intent i = new Intent(getApplicationContext(), PantallaLogIn.class);
+                startActivity(i);
+                break;
         }
+        /*if (id == R.id.action_settings) {
+            return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -148,7 +143,7 @@ public class MenuPrincipalGenerico extends AppCompatActivity
             System.out.println("_ID: "+usuarioParametros.get_id());
             System.out.println("NOMBRE: "+usuarioParametros.getNombre());
             System.out.println("EMAIL: "+usuarioParametros.getEmail());
-            System.out.println("NIVEL: "+usuarioParametros.getNivel_id());
+            //System.out.println("NIVEL: "+usuarioParametros.getNivel_id());
 
         } else if (id == R.id.nav_manage) {
             FragmentManager fragmentManager = getFragmentManager();

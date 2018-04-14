@@ -12,8 +12,8 @@ import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 public class ProductoTipo {
     String descripcion;
     String imagen;
-    String tienda_id;
-    Map productos;
+    //String tienda_id;
+    //Map productos;
 
     String _id = UUID.randomUUID().toString();
     Date fechaCreacion = new Date();
@@ -80,7 +80,7 @@ public class ProductoTipo {
         this.usuarioModificacion = usuarioModificacion;
     }
 
-    public Map getProductos() {
+    /*public Map getProductos() {
         return productos;
     }
 
@@ -94,5 +94,5 @@ public class ProductoTipo {
 
     public void setTienda_id(String tienda_id) {
         this.tienda_id = tienda_id;
-    }
+    }*/
 }

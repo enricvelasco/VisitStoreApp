@@ -22,15 +22,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.visitapp.visitstoreapp.UsuarioActual;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
+import com.visitapp.visitstoreapp.sistema.controllers.usuarios.UsuarioParametrosController;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.Usuario;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioNiveles;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.MenuPrincipalGenerico;
 import com.visitapp.visitstoreapp.R;
+import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class PantallaLogIn extends Activity implements
@@ -48,6 +53,15 @@ public class PantallaLogIn extends Activity implements
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
+
+
+    @Override
+    public void onBackPressed() {
+        //el boton back de la parte inferior esta desactivado
+        //super.onBackPressed();
+        System.out.println("HA APRETADO EL BACK");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,24 +198,75 @@ public class PantallaLogIn extends Activity implements
             System.out.println("COMPRUEBA EL USUARIO"+ user.getUid());
             System.out.println("CAMBIARA A PANTALLA DE MENU PRINCIPAL");
 
-
+            usuarioParametros.set_id(user.getUid());
 
             //montar usuario
-            usuarioParametros.set_id(user.getUid());
+            UsuarioParametrosController usuarioParametrosController = new UsuarioParametrosController();
+            usuarioParametrosController.read(usuarioParametros,new OnGetDataListener() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(DataSnapshot data) {
+                    System.out.println("LLEGA A ON SUCCESS " + data.getValue());
+                    usuarioParametros = data.getValue(UsuarioParametros.class);
+
+                    //asignar a variables globales
+                    USUARIO_ACTUAL = new UsuarioActual(usuarioParametros);
+                    ((VariablesGlobales) getApplication()).setUsuarioParametros(usuarioParametros);
+
+                    //cambia de pantalla una vez asignado el usuario correctamente
+                    //DETECTAR EL USUARIO QUE HA ENTRADO PARA ASIGNARLE SUS VALORES CORRESPONDIENTES
+                    switch (usuarioParametros.getNivel_id()){
+                        case 1:
+                            System.out.println("CONECTADO COMO ASOCIACION");
+                            //acceso a asociacion, tiendas y productos
+                            Intent a = new Intent(getApplicationContext(), AsociacionMenuPrincipal.class);
+                            startActivity(a);
+
+                            break;
+                        case 2:
+                            System.out.println("CONECTADO COMO TIENDA");
+                            //acceso tiendas y productos
+                            Intent i = new Intent(getApplicationContext(), MenuPrincipalGenerico.class);
+                            startActivity(i);
+
+                            break;
+                        case 3:
+                            System.out.println("CONECTADO COMO DISTRITO");
+                            break;
+                        case 4:
+                            System.out.println("CONECTADO COMO USUARIO REGISTRADO");
+                            break;
+                        case 5:
+                            System.out.println("CONECTADO COMO USUARIO VISITA");
+                            break;
+                        case 88:
+                            System.out.println("CONECTADO COMO ADMIN");
+                            break;
+                    }
+
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+
+                }
+            });
+            /*usuarioParametros.set_id(user.getUid());
             usuarioParametros.setEmail(user.getEmail());
-            usuarioParametros.setNombre("Asociacion 1");
+            usuarioParametros.setNombre("Gerencia Tienda 23");
+            //usuarioParametros.setAcceso_asociacion_id("154fef27-c8de-4fb0-8add-ff58961e6f14");
+            usuarioParametros.setAcceso_tienda_id("1c8a0f0c-e888-4338-b938-b747504950a3");
+            cargarNivelesUsuarioDemo(usuarioParametros);*/
 
             //localizar el nivel al que corresponde
-            usuarioParametros.setNivel_id(localizarNivelUsuario(usuarioParametros));
+            //usuarioParametros.setNivel_id(localizarNivelUsuario(usuarioParametros));
 
-            //asignar a variables globales
-            USUARIO_ACTUAL = new UsuarioActual(usuarioParametros);
-            ((VariablesGlobales) this.getApplication()).setUsuarioParametros(usuarioParametros);
 
-            //cargarNivelesUsuarioDemo(usuarioParametros);
 
-            Intent i = new Intent(getApplicationContext(), MenuPrincipalGenerico.class);
-            startActivity(i);
         }else{
             System.out.println("QUEDARSE EN PANTALLA LOGIN");
         }
@@ -226,7 +291,7 @@ public class PantallaLogIn extends Activity implements
         }*/
     }
 
-    private String localizarNivelUsuario(final UsuarioParametros usuarioParametros) {
+    /*private String localizarNivelUsuario(final UsuarioParametros usuarioParametros) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("usuariosNiveles");
 
@@ -242,7 +307,7 @@ public class PantallaLogIn extends Activity implements
                     for (DataSnapshot user: usuariosCorrespondientes) {
                         if(user.child("_id").getValue().equals(usuarioParametros.get_id())){
                             System.out.println("¡¡USUARIO ENCONTRADO!! "+usuarioParametros.getNombre());
-                            usuarioParametros.setNivel_id(data.child("_id").getValue().toString());
+                            //usuarioParametros.setNivel_id(data.child("_id").getValue().toString());
                         }
                     }
                 }
@@ -254,33 +319,18 @@ public class PantallaLogIn extends Activity implements
             }
         });
         return usuarioParametros.getNivel_id();
-    }
+    }*/
 
     private void cargarNivelesUsuarioDemo(UsuarioParametros usuarioParametros) {
-        List<UsuarioNiveles> usuarioNiveles = new ArrayList<>();
-        UsuarioNiveles un1 = new UsuarioNiveles();
-        un1.setNombre("Asociación");
-        un1.setObservaciones("control sobre todas sus tiendas");
-        List<Usuario> usuarios = new ArrayList<>();
-        usuarios.add(usuarioParametros);
-        un1.setUsuarios(usuarios);
-        usuarioNiveles.add(un1);
-        UsuarioNiveles un2 = new UsuarioNiveles();
-        un2.setNombre("Tienda");
-        un2.setObservaciones("solo tiene el control de los productos de la propia tienda");
-        usuarioNiveles.add(un2);
-        UsuarioNiveles un3 = new UsuarioNiveles();
-        un3.setNombre("Usuario registrado");
-        un3.setObservaciones("puede visualizar los productos, guardar favs y ver descripciones");
-        usuarioNiveles.add(un3);
-        UsuarioNiveles un4 = new UsuarioNiveles();
-        un4.setNombre("Usuario sin registrar");
-        un4.setObservaciones("solo puede visualizar");
-        usuarioNiveles.add(un4);
+        UsuarioNiveles usuarioNiveles = new UsuarioNiveles();
+        Map object = new HashMap();
+        object.put(usuarioParametros.get_id(), usuarioParametros);
+        usuarioNiveles.setUsuarios(object);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("usuariosNiveles");
-        myRef.setValue(usuarioNiveles);
+        DatabaseReference myRef = database.getReference("usuariosParametros");//coge usuarios niveles
+        //myRef.setValue(usuarioNiveles);
+        myRef.child(usuarioParametros.get_id()).setValue(usuarioParametros);
     }
 
 }

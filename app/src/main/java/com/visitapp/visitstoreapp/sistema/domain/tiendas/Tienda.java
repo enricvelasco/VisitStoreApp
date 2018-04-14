@@ -21,7 +21,7 @@ public class Tienda{
     String direccion;
     String logo;
     String asociacion_id;
-    Map sectores;
+    Map sectores_tienda;
     Map productosTipo;
 
     String _id = UUID.randomUUID().toString();
@@ -97,12 +97,12 @@ public class Tienda{
         this.asociacion_id = asociacion_id;
     }
 
-    public Map getSectores() {
-        return sectores;
+    public Map getSectores_tienda() {
+        return sectores_tienda;
     }
 
-    public void setSectores(Map sectores) {
-        this.sectores = sectores;
+    public void setSectores_tienda(Map sectores_tienda) {
+        this.sectores_tienda = sectores_tienda;
     }
 
     public Date getFechaCreacion() {
