@@ -1,6 +1,8 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
@@ -66,15 +70,9 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         final TextView direccion = findViewById(R.id.idDireccionAsociacion);
         final TextView telefono = findViewById(R.id.idTelefonoAsociacion);
 
-        ImageView imagenPerfil = findViewById(R.id.idImagenPerfil);
+        final ImageView imagenPerfil = findViewById(R.id.idImagenPerfil);
 
-        /*StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference riversRef = mStorageRef.child("images/rivers.jpg");
-        riversRef.getFile()*/
 
-        String imagen = "gs://visitstoreapp.appspot.com/asociacion/5f6b1e08-3156-4a4b-88a1-23e9bc610549/logo.jpg";
-
-        Picasso.with(this).load(imagen).into(imagenPerfil);
 
         UsuarioParametros usuarioParametros = ((VariablesGlobales) this.getApplication()).getUsuarioParametros();
         nombre.setText(usuarioParametros.getNombre());
@@ -102,6 +100,31 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
 
             }
         });
+
+
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        final StorageReference profilePicture = mStorageRef.child("asociacion").child(usuarioParametros.getAcceso_asociacion_id()).child("logo.jpg");
+        //riversRef.getFile()*/
+        //System.out.println("LA URL DE LA FOTO "+profilePicture);
+
+        profilePicture.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                //System.out.println("LA URL DE DESCARGA ES "+uri.toString());
+                Picasso.with(getApplicationContext()).load(String.valueOf(uri.toString())).resize(50,50).centerCrop().into(imagenPerfil);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Picasso.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/default%2Flogo_profile%2Flogo_default.jpg?alt=media&token=272762af-838f-42d8-aa45-a7919e4d1e59").resize(50,50).centerCrop().into(imagenPerfil);
+            }
+        });
+
+
+        //String imagen = "https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/asociacion%2F5f6b1e08-3156-4a4b-88a1-23e9bc610549%2Flogo.jpg?alt=media&token=8e3eca5e-f53a-4df7-a972-c2ab6667b953";
+
+        //Picasso.with(this).load(String.valueOf(profilePicture)).resize(50,50).centerCrop().into(imagenPerfil);
+
 
         return true;
     }
