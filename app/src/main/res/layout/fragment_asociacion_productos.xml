@@ -13,6 +13,7 @@
             android:id="@+id/idGridViewProductosAsociacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="2"></GridView>
+            android:background="@android:color/background_light"
+            android:numColumns="auto_fit"></GridView>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

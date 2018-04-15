@@ -53,13 +53,13 @@ public class ItemProductoListado extends BaseAdapter {
         // 3
         //RelativeLayout frame = convertView.findViewById(R.id.frameContenidoIconoMenu);
         ImageView imageView = convertView.findViewById(R.id.idPictureProductoListado);
-        TextView nombre = convertView.findViewById(R.id.idNombreProductoEnGrid);
-        TextView precio = convertView.findViewById(R.id.idPrecioProductoListado);
+        /*TextView nombre = convertView.findViewById(R.id.idNombreProductoEnGrid);
+        TextView precio = convertView.findViewById(R.id.idPrecioProductoListado);*/
 
-        nombre.setText(producto.getNombre());
-        precio.setText("€€€");
+        /*nombre.setText(producto.getNombre());
+        precio.setText("€€€");*/
 
-        Picasso.with(context).load("https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/tienda%2Fbf65155f-75de-45a9-b4e0-63ee60884db6%2Flogo_store_1.jpg?alt=media&token=27194309-19ab-42a1-bbe2-c15dc0983d69").resize(200,200).centerCrop().into(imageView);
+        Picasso.with(context).load("https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/tienda%2Fbf65155f-75de-45a9-b4e0-63ee60884db6%2Flogo_store_1.jpg?alt=media&token=27194309-19ab-42a1-bbe2-c15dc0983d69").into(imageView);
 
         return convertView;
     }
