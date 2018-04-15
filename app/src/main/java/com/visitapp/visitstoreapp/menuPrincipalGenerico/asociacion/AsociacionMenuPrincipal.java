@@ -1,6 +1,12 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,8 +21,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,9 +35,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.login.PantallaLogIn;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentPrincipal;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentProductos;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentPrincipal;
 import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
 import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
@@ -38,6 +51,7 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
+    private ListView listadoTiendas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +68,14 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        listadoTiendas = findViewById(R.id.idListaTiendas);
+        listadoTiendas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                System.out.println("CLICK EN ELEMENTO DEL LISTADO");
+            }
+        });
     }
 
     @Override
@@ -116,7 +138,8 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
             @Override
             public void onSuccess(Uri uri) {
                 //System.out.println("LA URL DE DESCARGA ES "+uri.toString());
-                Picasso.with(getApplicationContext()).load(String.valueOf(uri.toString())).resize(50,50).centerCrop().into(imagenPerfil);
+                //Picasso.with(getApplicationContext()).load(String.valueOf(uri.toString())).resize(200,200).centerCrop().into(imagenPerfil);
+                Picasso.with(getApplicationContext()).load(String.valueOf(uri.toString())).transform(new CircleTransform()).into(imagenPerfil);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -165,9 +188,23 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (id){
+            case R.id.nav_asociacion_tiendas:
+                System.out.println("CLICK EN MENU DE TINDAS");
+                AsociacionFragmentPrincipal fragment = new AsociacionFragmentPrincipal();
+                fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragment);
+                fragmentTransaction.commit();
 
+                break;
+            case R.id.nav_asociacion_productos:
+                System.out.println("CLICK EN MENU DE PRODUCTOS");
+                AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
+                fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
+                fragmentTransaction.commit();
+                break;
         }
 
         /*if (id == R.id.nav_camera) {
@@ -189,3 +226,40 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         return true;
     }
 }
+
+class CircleTransform implements Transformation {
+    @Override
+    public Bitmap transform(Bitmap source) {
+        int size = Math.min(source.getWidth(), source.getHeight());
+
+        int x = (source.getWidth() - size) / 2;
+        int y = (source.getHeight() - size) / 2;
+
+        Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+        if (squaredBitmap != source) {
+            source.recycle();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        BitmapShader shader = new BitmapShader(squaredBitmap,
+                BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+        paint.setShader(shader);
+        paint.setAntiAlias(true);
+
+        float r = size / 2f;
+        canvas.drawCircle(r, r, r, paint);
+
+        squaredBitmap.recycle();
+        return bitmap;
+    }
+
+    @Override
+    public String key() {
+        return "circle";
+    }
+}
+
+

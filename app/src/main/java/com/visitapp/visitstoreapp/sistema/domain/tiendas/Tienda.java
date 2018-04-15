@@ -16,7 +16,7 @@ public class Tienda{
     String codigo;
     String nif;
     String nombreFiscal;
-    String nombreNombrePublico;
+    String nombrePublico;
     String observaciones;
     String direccion;
     String logo;
@@ -57,12 +57,12 @@ public class Tienda{
         this.nombreFiscal = nombreFiscal;
     }
 
-    public String getNombreNombrePublico() {
-        return nombreNombrePublico;
+    public String getNombrePublico() {
+        return nombrePublico;
     }
 
-    public void setNombreNombrePublico(String nombreNombrePublico) {
-        this.nombreNombrePublico = nombreNombrePublico;
+    public void setNombrePublico(String nombrePublico) {
+        this.nombrePublico = nombrePublico;
     }
 
     public String getObservaciones() {

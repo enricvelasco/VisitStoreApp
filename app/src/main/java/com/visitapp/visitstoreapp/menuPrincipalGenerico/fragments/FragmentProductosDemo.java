@@ -249,7 +249,7 @@ public class FragmentProductosDemo extends Fragment{
             Tienda tienda = new Tienda();
             tienda.setNif("00"+numBase+i);
             tienda.setNombreFiscal("Local Fiscal "+numBase+i);
-            tienda.setNombreNombrePublico("Tienda "+numBase+i);
+            tienda.setNombrePublico("Tienda "+numBase+i);
             tienda.setAsociacion_id(a1.get_id());
 
 

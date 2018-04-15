@@ -8,4 +8,16 @@
     tools:context=".menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal"
     tools:showIn="@layout/app_bar_asociacion_menu_principal">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/fragmentAsociacionPrincipal"
+            android:name="com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentPrincipal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
