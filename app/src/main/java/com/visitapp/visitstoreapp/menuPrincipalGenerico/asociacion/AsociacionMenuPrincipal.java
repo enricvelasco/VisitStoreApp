@@ -1,5 +1,6 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
@@ -26,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
+import com.visitapp.visitstoreapp.login.PantallaLogIn;
 import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
 import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
@@ -33,6 +36,8 @@ import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 public class AsociacionMenuPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,11 +140,22 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id){
+            case R.id.action_configParametros:
+                System.out.println("CLICK EN CONFIGURAR PARAMETROS");
+                break;
+            case R.id.action_logOut:
+                System.out.println("CLICK EN LOG OUT");
+                mAuth.getInstance().signOut();
+                Intent i = new Intent(getApplicationContext(), PantallaLogIn.class);
+                startActivity(i);
+                break;
+        }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -150,7 +166,11 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        switch (id){
+
+        }
+
+        /*if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -162,7 +182,7 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        }
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -217,6 +217,8 @@ public class PantallaLogIn extends Activity implements
                     USUARIO_ACTUAL = new UsuarioActual(usuarioParametros);
                     ((VariablesGlobales) getApplication()).setUsuarioParametros(usuarioParametros);
 
+                    //((VariablesGlobales) getApplication()).setUsuarioParametros(user);
+
                     //cambia de pantalla una vez asignado el usuario correctamente
                     //DETECTAR EL USUARIO QUE HA ENTRADO PARA ASIGNARLE SUS VALORES CORRESPONDIENTES
                     switch (usuarioParametros.getNivel_id()){
