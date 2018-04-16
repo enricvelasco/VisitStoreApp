@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities.AsociacionProductoFormulario;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.adapter.ItemProductoListado;
 import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoController;
 import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
@@ -70,13 +71,15 @@ public class AsociacionFragmentProductos extends Fragment {
         botonAddProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToCrearNuevoProducto();
+                System.out.println("TENDRIA QUE CAMBIAR DE ACTIVITY");
+                Intent a = new Intent(getActivity(), AsociacionProductoFormulario.class);
+                startActivity(a);
             }
         });
     }
 
-    private void goToCrearNuevoProducto() {
+    /*private void goToCrearNuevoProducto() {
         Intent a = new Intent(getActivity(), AsociacionMenuPrincipal.class);
         startActivity(a);
-    }
+    }*/
 }
