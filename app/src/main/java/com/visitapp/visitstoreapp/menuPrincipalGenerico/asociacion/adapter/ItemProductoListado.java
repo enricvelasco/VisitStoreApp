@@ -8,10 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.squareup.picasso.Picasso;
 import com.visitapp.visitstoreapp.R;
+import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
 import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
 import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
+import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.util.List;
 
@@ -53,9 +57,31 @@ public class ItemProductoListado extends BaseAdapter {
         // 3
         //RelativeLayout frame = convertView.findViewById(R.id.frameContenidoIconoMenu);
         ImageView imageView = convertView.findViewById(R.id.idPictureProductoListado);
-        /*TextView nombre = convertView.findViewById(R.id.idNombreProductoEnGrid);
-        TextView precio = convertView.findViewById(R.id.idPrecioProductoListado);*/
+        TextView nombre = convertView.findViewById(R.id.idNombreItemNombreProducto);
+        TextView precio = convertView.findViewById(R.id.idPrecioItemProducto);
+        final TextView nombreTienda = convertView.findViewById(R.id.idNombreTiendaItemProducto);
 
+        nombre.setText(producto.getNombre());
+        precio.setText(producto.getPrecio());
+
+        TiendaController tiendaController = new TiendaController();
+        tiendaController.read(producto.getTienda_id(), new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                Tienda tienda = data.getValue(Tienda.class);
+                nombreTienda.setText(tienda.getNombrePublico());
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
         /*nombre.setText(producto.getNombre());
         precio.setText("€€€");*/
 

@@ -15,11 +15,13 @@ public class Producto{
     String codigo;
     String codigoBarras;
     String codigoQR;
+    String descripcion;
     String productosTipo_id;
     String asociacion_id;
     String tienda_id;
     Map productosComposicion_productos;
-    Float precio;
+    Double precio;
+    Boolean esPromocion;
 
     String _id = UUID.randomUUID().toString();
     Date fechaCreacion = new Date();
@@ -126,11 +128,17 @@ public class Producto{
         this.codigoQR = codigoQR;
     }
 
-    public Float getPrecio() {
-        return precio;
+    public String getPrecio() {
+        if(precio == null){
+            precio = 0.0;
+        }
+
+        String strPrecio = Double.toString(precio)+"€";
+
+        return strPrecio;
     }
 
-    public void setPrecio(Float precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
@@ -148,5 +156,21 @@ public class Producto{
 
     public void setTienda_id(String tienda_id) {
         this.tienda_id = tienda_id;
+    }
+
+    public Boolean getEsPromocion() {
+        return esPromocion;
+    }
+
+    public void setEsPromocion(Boolean esPromocion) {
+        this.esPromocion = esPromocion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".menuPrincipalGenerico.asociacion.activities.AsociacionProductoFormulario"
+    tools:showIn="@layout/activity_asociacion_producto_formulario">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatingActionButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="20dp"
+                    android:clickable="true"
+                    app:backgroundTint="@android:color/holo_orange_dark"
+                    app:srcCompat="@drawable/ic_cancel_white" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatingActionButton"
+                    android:layout_width="72dp"
+                    android:layout_height="67dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/floatingActionButton2"
+                    android:layout_marginEnd="32dp"
+                    android:clickable="true"
+                    app:backgroundTint="@android:color/holo_green_light"
+                    app:srcCompat="@drawable/ic_save_as_white" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="275dp"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textView4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="BDcode"
+                                android:textAlignment="textEnd" />
+
+                            <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/floatingActionButton3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                app:backgroundTint="@android:color/holo_blue_light"
+                                app:srcCompat="@drawable/ic_bar_code_white" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/floatingActionButton4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginStart="5dp"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                app:backgroundTint="@android:color/holo_blue_light"
+                                app:srcCompat="@drawable/ic_qr_code_white" />
+
+                            <TextView
+                                android:id="@+id/textView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="QRcode" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editText3"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Código" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="41dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Nombre" />
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

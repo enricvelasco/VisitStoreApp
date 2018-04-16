@@ -34,9 +34,9 @@ public class TiendaController {
         });
     }
 
-    public void read(Tienda tienda, final OnGetDataListener listener){
+    public void read(String idTienda, final OnGetDataListener listener){
         listener.onStart();
-        myRef.child(tienda.get_id()).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child(idTienda).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);

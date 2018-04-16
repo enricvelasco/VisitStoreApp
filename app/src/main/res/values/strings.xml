@@ -15,4 +15,6 @@
     <string name="action_log_out">Log Out</string>
     <string name="title_activity_asociacion_menu_principal">AsociacionMenuPrincipal</string>
     <string name="action_config_parametros">Configuración</string>
+    <string name="title_activity_asociacion_producto_formulario">AsociacionProductoFormulario
+    </string>
 </resources>
