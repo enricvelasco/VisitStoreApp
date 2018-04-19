@@ -136,6 +136,7 @@ public class Producto{
         String strPrecio = Double.toString(precio)+"€";
 
         return strPrecio;
+        //return precio;
     }
 
     public void setPrecio(Double precio) {
