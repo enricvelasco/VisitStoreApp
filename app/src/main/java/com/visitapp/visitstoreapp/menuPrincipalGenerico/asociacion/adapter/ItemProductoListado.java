@@ -74,7 +74,10 @@ public class ItemProductoListado extends BaseAdapter {
             @Override
             public void onSuccess(DataSnapshot data) {
                 Tienda tienda = data.getValue(Tienda.class);
-                nombreTienda.setText(tienda.getNombrePublico());
+                if(tienda != null){
+                    nombreTienda.setText(tienda.getNombrePublico());
+                }
+
             }
 
             @Override

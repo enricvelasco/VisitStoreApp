@@ -20,7 +20,7 @@ public class Producto{
     String asociacion_id;
     String tienda_id;
     Map productosComposicion_productos;
-    Double precio;
+    String precio;
     Boolean esPromocion;
 
     String _id = UUID.randomUUID().toString();
@@ -129,6 +129,14 @@ public class Producto{
     }
 
     public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
+
+    /*public String getPrecio() {
         if(precio == null){
             precio = 0.0;
         }
@@ -141,7 +149,7 @@ public class Producto{
 
     public void setPrecio(Double precio) {
         this.precio = precio;
-    }
+    }*/
 
     public String getAsociacion_id() {
         return asociacion_id;

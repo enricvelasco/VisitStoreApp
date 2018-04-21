@@ -39,7 +39,29 @@ public class AsociacionFragmentPrincipal extends Fragment{
         listadoTiendas = view.findViewById(R.id.idListaTiendas);
 
         TiendaController tiendaController = new TiendaController();
-        tiendaController.getList(new OnGetDataListener() {
+        tiendaController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                List<Tienda> listadoTiendasList = new ArrayList<>();
+                for(DataSnapshot element : data.getChildren()){
+                    Tienda tienda = element.getValue(Tienda.class);
+                    listadoTiendasList.add(tienda);
+                }
+                ItemTiendaListado itemTiendaListado = new ItemTiendaListado(listadoTiendasList, view.getContext());
+                listadoTiendas.setAdapter(itemTiendaListado);
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
+        /*tiendaController.getList(new OnGetDataListener() {
             @Override
             public void onStart() {
 
@@ -65,6 +87,6 @@ public class AsociacionFragmentPrincipal extends Fragment{
             public void onFailed(DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 }

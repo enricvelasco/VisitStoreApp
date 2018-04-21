@@ -73,10 +73,9 @@ public class TiendaController {
         myRef.child(tienda.get_id()).removeValue();
     }
 
-    public void queryAsociacion(String idAsociacion, final OnGetDataListener listener){
+    public void queryEquals(String campoFiltrar, String valorEqual, final OnGetDataListener listener){
         listener.onStart();
-        System.out.println("ID ASOCIACION: "+idAsociacion);
-        Query query = myRef.orderByChild("asociacion_id").equalTo(idAsociacion);
+        Query query = myRef.orderByChild(campoFiltrar).equalTo(valorEqual);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

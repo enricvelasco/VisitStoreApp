@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
@@ -70,5 +71,21 @@ public class ProductoController {
 
     public void delete(Producto producto){
         myRef.child(producto.get_id()).removeValue();
+    }
+
+    public void queryEquals(String campoFiltrar, String valorEqual, final OnGetDataListener listener){
+        listener.onStart();
+        Query query = myRef.orderByChild(campoFiltrar).equalTo(valorEqual);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
     }
 }

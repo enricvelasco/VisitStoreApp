@@ -43,7 +43,31 @@ public class AsociacionFragmentProductos extends Fragment {
         botonAddProducto = view.findViewById(R.id.idButtonAddProducto);
         gridProductos = view.findViewById(R.id.idGridViewProductosAsociacion);
         ProductoController productoController = new ProductoController();
-        productoController.getList(new OnGetDataListener() {
+
+        productoController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                List<Producto> lista = new ArrayList<>();
+                for(DataSnapshot element : data.getChildren()){
+                    Producto producto = element.getValue(Producto.class);
+                    lista.add(producto);
+                }
+                ItemProductoListado item = new ItemProductoListado(lista, view.getContext());
+                gridProductos.setAdapter(item);
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
+
+        /*productoController.getList(new OnGetDataListener() {
             @Override
             public void onStart() {
 
@@ -66,7 +90,7 @@ public class AsociacionFragmentProductos extends Fragment {
             public void onFailed(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
         botonAddProducto.setOnClickListener(new View.OnClickListener() {
             @Override

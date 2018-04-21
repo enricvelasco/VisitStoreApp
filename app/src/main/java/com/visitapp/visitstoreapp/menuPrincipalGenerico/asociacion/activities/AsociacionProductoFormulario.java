@@ -71,7 +71,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
 
         //asignar nombres de las tiendas a mostrar en el select
         TiendaController tiendaController = new TiendaController();
-        tiendaController.queryAsociacion(USUARIO_ACTUAL.getParametrosUsuarioActual().getAcceso_asociacion_id(), new OnGetDataListener() {
+        tiendaController.queryEquals("asociacion_id", USUARIO_ACTUAL.getParametrosUsuarioActual().getAcceso_asociacion_id(), new OnGetDataListener() {
             @Override
             public void onStart() {
 
