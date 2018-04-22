@@ -1,5 +1,9 @@
 package com.visitapp.visitstoreapp.sistema.domain.productos;
 
+import android.net.Uri;
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.StorageReference;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 
 import java.util.Date;
@@ -39,6 +43,7 @@ public class Producto{
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
 
     public String getImagen() {
         return imagen;

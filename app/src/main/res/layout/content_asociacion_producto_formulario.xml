@@ -35,11 +35,34 @@
                     app:srcCompat="@drawable/ic_save_as_white" />
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="275dp"
+                    android:id="@+id/idImagenProducto"
+                    android:layout_width="147dp"
+                    android:layout_height="220dp"
                     android:layout_centerHorizontal="true"
-                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+                    android:background="@android:color/darker_gray"
+                    app:srcCompat="@drawable/ic_picture_black" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/idFloattingButtonTakePictureProducto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:clickable="true"
+                    app:backgroundTint="@android:color/holo_blue_light"
+                    app:srcCompat="@drawable/ic_camera_white" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/idFloatingButtonGetFromGalleryPictureProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="24dp"
+                    android:clickable="true"
+                    app:backgroundTint="@android:color/holo_blue_light"
+                    app:srcCompat="@drawable/ic_gallery_white" />
 
             </RelativeLayout>
 
@@ -134,8 +157,10 @@
 
                     <EditText
                         android:id="@+id/idCodigoProductoFormulario"
-                        android:layout_width="wrap_content"
+                        android:layout_width="350dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="Codigo"
@@ -158,8 +183,9 @@
 
                     <EditText
                         android:id="@+id/idNombreProductoFormulario"
-                        android:layout_width="400dp"
+                        android:layout_width="350dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:ems="10"

@@ -10,6 +10,7 @@ import java.util.UUID;
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
 public class ProductoTipo {
+    String codigo;
     String descripcion;
     String imagen;
     //String tienda_id;
@@ -78,6 +79,14 @@ public class ProductoTipo {
 
     public void setUsuarioModificacion(UsuarioParametros usuarioModificacion) {
         this.usuarioModificacion = usuarioModificacion;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     /*public Map getProductos() {

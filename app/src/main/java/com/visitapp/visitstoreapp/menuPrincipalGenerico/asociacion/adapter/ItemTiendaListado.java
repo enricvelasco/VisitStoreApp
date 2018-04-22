@@ -43,6 +43,7 @@ public class ItemTiendaListado extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        System.out.println("ASIGNA ITEM TIENDA ////"+position);
         // 1
         final Tienda tienda = (Tienda) listaTiendas.get(position);
 

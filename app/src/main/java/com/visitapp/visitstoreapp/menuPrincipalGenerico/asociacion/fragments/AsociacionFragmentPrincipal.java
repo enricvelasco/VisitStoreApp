@@ -52,6 +52,7 @@ public class AsociacionFragmentPrincipal extends Fragment{
                     Tienda tienda = element.getValue(Tienda.class);
                     listadoTiendasList.add(tienda);
                 }
+                System.out.println("CREA ITEM PRODUCTO ***");
                 ItemTiendaListado itemTiendaListado = new ItemTiendaListado(listadoTiendasList, view.getContext());
                 listadoTiendas.setAdapter(itemTiendaListado);
             }
