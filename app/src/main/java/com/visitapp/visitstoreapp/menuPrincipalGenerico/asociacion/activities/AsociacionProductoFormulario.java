@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -38,7 +39,11 @@ import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +70,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
 
     //image
     ImageView imagenProducto;
+    String mCurrentPhotoPath;
 
     //rutas
     private StorageReference mStorageRef;
@@ -72,6 +78,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST_CODE = 1;
     Bitmap bitImagenProducto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,8 +194,16 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         botonFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                try {
+                    File imagen = createImageFile();
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
+                            imagen);
+                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -314,6 +329,22 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         //"/photos/productos/06d35521-0490-47ad-89a6-a9feb1330e09/06d35521-0490-47ad-89a6-a9feb1330e09"
         //"gs://visitstoreapp.appspot.com/photos/productos/1e13af45-70a2-44ac-91c5-6b1f099c9395/1e13af45-70a2-44ac-91c5-6b1f099c9395"
         //https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/photos%2Fproductos%2F1e13af45-70a2-44ac-91c5-6b1f099c9395%2F1e13af45-70a2-44ac-91c5-6b1f099c9395?alt=media&token=b5941c33-ece4-4c8a-80e9-184f3f5f1f77
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
 }
