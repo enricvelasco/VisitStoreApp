@@ -1,8 +1,13 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -10,6 +15,8 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -49,9 +56,17 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
     private FirebaseAuth mAuth;
     private ListView listadoTiendas;
 
+    int SOLICITUD_PERMISO_CAMARA = 1;
+    int SOLICITUD_PERMISO_READ = 101;
+    int SOLICITUD_PERMISO_WRITE= 201;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        comprobarPermisoCamara();
+        comprobarPermisoRead();
+        comprobarPermisoWrite();
+
         setContentView(R.layout.activity_asociacion_menu_principal);
 
         String estadoActual = ((VariablesGlobales) getApplication()).getMenuActual();
@@ -90,8 +105,6 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
             }
         });
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -258,6 +271,57 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
         fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
         fragmentTransaction.commit();
+    }
+
+    private void comprobarPermisoWrite(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            System.out.println("TIENE PERMISO DE READ:::::::::::::::::::::::");
+        }else{
+            System.out.println("NO TIENE PERMISO READ!!!!!!!!!!!!!!!!!!!");
+            solicitarPermisoCamara(Manifest.permission.WRITE_EXTERNAL_STORAGE, "Sin el permiso"+
+                            " no se podrá accedes a la gestión de imagenes.",
+                    SOLICITUD_PERMISO_WRITE, this);
+        }
+    }
+
+    private void comprobarPermisoRead(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            System.out.println("TIENE PERMISO DE READ:::::::::::::::::::::::");
+        }else{
+            System.out.println("NO TIENE PERMISO READ!!!!!!!!!!!!!!!!!!!");
+            solicitarPermisoCamara(Manifest.permission.READ_EXTERNAL_STORAGE, "Sin el permiso"+
+                            " no se podrá accedes a la gestión de imagenes.",
+                    SOLICITUD_PERMISO_READ, this);
+        }
+    }
+
+    private void comprobarPermisoCamara() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            System.out.println("TIENE PERMISO DE CAMARA:::::::::::::::::::::::");
+        }else{
+            System.out.println("NO TIENE PERMISO CAMARA!!!!!!!!!!!!!!!!!!!");
+            solicitarPermisoCamara(Manifest.permission.CAMERA, "Sin el permiso"+
+                            " no hay acceso a la camara.",
+                    SOLICITUD_PERMISO_CAMARA, this);
+        }
+    }
+
+    private void solicitarPermisoCamara(final String permiso, String justificacion, final int requestCode, final Activity actividad){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(actividad,
+                permiso)){
+            new AlertDialog.Builder(actividad)
+                    .setTitle("Solicitud de permiso")
+                    .setMessage(justificacion)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            ActivityCompat.requestPermissions(actividad,
+                                    new String[]{permiso}, requestCode);
+                        }})
+                    .show();
+        } else {
+            ActivityCompat.requestPermissions(actividad,
+                    new String[]{permiso}, requestCode);
+        }
     }
 }
 

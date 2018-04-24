@@ -1,15 +1,21 @@
 package com.visitapp.visitstoreapp.login;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,6 +61,7 @@ public class PantallaLogIn extends Activity implements
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     public void onBackPressed() {
@@ -220,6 +227,12 @@ public class PantallaLogIn extends Activity implements
                     //asignar a variables globales
                     USUARIO_ACTUAL = new UsuarioActual(usuarioParametros);
                     ((VariablesGlobales) getApplication()).setUsuarioParametros(usuarioParametros);
+
+
+                    //Solicitar Permisos del telefono
+                    //solicitarPermisoCamara();
+
+
 
                     //((VariablesGlobales) getApplication()).setUsuarioParametros(user);
 
