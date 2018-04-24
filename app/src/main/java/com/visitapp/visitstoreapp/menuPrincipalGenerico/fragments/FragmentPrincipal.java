@@ -10,10 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.huxq17.swipecardsview.SwipeCardsView;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.adapter.CardAdapter;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.model.Model;
+import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoController;
+import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
+import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +53,37 @@ public class FragmentPrincipal extends Fragment {
     }
 
     private void getData() {
-        modelList.add(new Model("Camisa", "https://i2.linio.com/p/e7ad556f25504c845047bd9a43e511ef-product.jpg"));
+        /*modelList.add(new Model("Camisa", "https://i2.linio.com/p/e7ad556f25504c845047bd9a43e511ef-product.jpg"));
         modelList.add(new Model("Pantalon", "https://media.wuerth.com/stmedia/modyf/shop/900px/1370434.jpg"));
-        modelList.add(new Model("Zapatos", "https://cdn.ferragamo.com/wcsstore/FerragamoCatalogAssetStore/images/products/551035/551035_00.png"));
+        modelList.add(new Model("Zapatos", "https://cdn.ferragamo.com/wcsstore/FerragamoCatalogAssetStore/images/products/551035/551035_00.png"));*/
 
-        CardAdapter cardAdapter = new CardAdapter(modelList, getActivity());
-        swipeCardsView.setAdapter(cardAdapter);
+        ProductoController productoController = new ProductoController();
+        productoController.getList(new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                List<Producto> productoControllerList = new ArrayList<>();
+                for(DataSnapshot item : data.getChildren()){
+                    Producto producto = item.getValue(Producto.class);
+                    productoControllerList.add(producto);
+                }
+
+                CardAdapter cardAdapter = new CardAdapter(productoControllerList, getActivity());
+                swipeCardsView.setAdapter(cardAdapter);
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
+
+        /*CardAdapter cardAdapter = new CardAdapter(modelList, getActivity());
+        swipeCardsView.setAdapter(cardAdapter);*/
 
     }
 

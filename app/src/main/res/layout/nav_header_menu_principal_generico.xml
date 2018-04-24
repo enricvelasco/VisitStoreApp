@@ -13,7 +13,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/idImagenPerfil"
+        android:id="@+id/idImagenCartaProducto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -25,8 +25,8 @@
         android:id="@+id/idNombreMenuInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/idImagenPerfil"
-        android:layout_toEndOf="@+id/idImagenPerfil"
+        android:layout_alignTop="@+id/idImagenCartaProducto"
+        android:layout_toEndOf="@+id/idImagenCartaProducto"
         android:paddingLeft="5dp"
         android:text="Nombre"
         android:textSize="12sp" />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/idImagenPerfil"
+        android:layout_toEndOf="@+id/idImagenCartaProducto"
         android:paddingLeft="5dp"
         android:text="Direccion"
         android:textSize="10sp" />
@@ -45,8 +45,8 @@
         android:id="@+id/idTelefonoMenuInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/idImagenPerfil"
-        android:layout_toEndOf="@+id/idImagenPerfil"
+        android:layout_alignBottom="@+id/idImagenCartaProducto"
+        android:layout_toEndOf="@+id/idImagenCartaProducto"
         android:paddingLeft="5dp"
         android:text="Telefono"
         android:textSize="10sp" />

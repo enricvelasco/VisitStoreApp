@@ -1,9 +1,7 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -12,8 +10,6 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,9 +22,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,7 +38,6 @@ import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.login.PantallaLogIn;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentProductos;
-import com.visitapp.visitstoreapp.menuPrincipalGenerico.fragments.FragmentPrincipal;
 import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
 import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
@@ -119,7 +112,7 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         final TextView direccion = findViewById(R.id.idDireccionAsociacion);
         final TextView telefono = findViewById(R.id.idTelefonoAsociacion);
 
-        final ImageView imagenPerfil = findViewById(R.id.idImagenPerfil);
+        final ImageView imagenPerfil = findViewById(R.id.idImagenCartaProducto);
 
 
 

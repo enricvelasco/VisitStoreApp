@@ -17,4 +17,5 @@
     <string name="action_config_parametros">Configuración</string>
     <string name="title_activity_asociacion_producto_formulario">AsociacionProductoFormulario
     </string>
+    <string name="title_activity_usuario_visita_menu_principal">UsuarioVisitaMenuPrincipal</string>
 </resources>

@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.visitapp.visitstoreapp.UsuarioActual;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.visita.UsuarioVisitaMenuPrincipal;
 import com.visitapp.visitstoreapp.sistema.controllers.usuarios.UsuarioParametrosController;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.Usuario;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioNiveles;
@@ -247,6 +248,9 @@ public class PantallaLogIn extends Activity implements
                             break;
                         case 5:
                             System.out.println("CONECTADO COMO USUARIO VISITA");
+                            //acceso tiendas y productos
+                            Intent c = new Intent(getApplicationContext(), UsuarioVisitaMenuPrincipal.class);
+                            startActivity(c);
                             break;
                         case 88:
                             System.out.println("CONECTADO COMO ADMIN");
