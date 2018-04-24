@@ -8,6 +8,7 @@ import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 public class VariablesGlobales extends Application{
     private UsuarioParametros usuarioParametros;
     private FirebaseAuth firebaseAuth;
+    private String menuActual;
 
     public UsuarioParametros getUsuarioParametros() {
         return usuarioParametros;
@@ -24,5 +25,13 @@ public class VariablesGlobales extends Application{
 
     public void setFirebaseAuth(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
+    }
+
+    public String getMenuActual() {
+        return menuActual;
+    }
+
+    public void setMenuActual(String menuActual) {
+        this.menuActual = menuActual;
     }
 }

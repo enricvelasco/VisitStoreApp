@@ -1,17 +1,20 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities;
 
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -26,9 +29,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.visitapp.visitstoreapp.R;
+import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.adapter.spinner.ItemSpinnerNoPicture;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
 import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoController;
 import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoTipoController;
 import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
@@ -39,11 +43,7 @@ import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +54,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
     private EditText codigo;
     private EditText nombre;
     private EditText descripcion;
+    private EditText precio;
     private Spinner selectTienda;
     private Spinner selectProductoTipo;
 
@@ -70,19 +71,22 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
 
     //image
     ImageView imagenProducto;
-    String mCurrentPhotoPath;
 
     //rutas
     private StorageReference mStorageRef;
-    StorageReference urlPictureProduct;
-
     private static final int CAMERA_REQUEST_CODE = 1;
-    Bitmap bitImagenProducto;
 
+    ContentValues values;
+    Uri imageUri;
+    Bitmap thumbnail = null;
+    String imageurl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((VariablesGlobales) getApplication()).setMenuActual("formularioProductos");
+
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         setContentView(R.layout.activity_asociacion_producto_formulario);
@@ -94,21 +98,20 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         codigo = findViewById(R.id.idCodigoProductoFormulario);
         //codigo = findViewById(R.id.idCodigoProductoFormulario);
         nombre = findViewById(R.id.idNombreProductoFormulario);
+        precio = findViewById(R.id.idPrecioProductoFormulario);
         descripcion = findViewById(R.id.idDescripcionProductoFormulario);
         selectTienda = findViewById(R.id.idTiendaSelect);
         selectProductoTipo = findViewById(R.id.idProductoTipoSelect);
         imagenProducto = findViewById(R.id.idImagenProducto);
 
         //botones formulario
-        botonGetBarCode = findViewById(R.id.idFloatigButtonGetBarCodeProducto);
-        botonGetBarCode = findViewById(R.id.idFloatingButtonGetQRCodeProducto);
+        /*botonGetBarCode = findViewById(R.id.idFloatigButtonGetBarCodeProducto);
+        botonGetBarCode = findViewById(R.id.idFloatingButtonGetQRCodeProducto);*/
         botonGuardar = findViewById(R.id.idFloatingButtonGuardarProducto);
+        //botonGuardar.setEnabled(false);
         botonFoto = findViewById(R.id.idFloattingButtonTakePictureProducto);
         botonGaleria = findViewById(R.id.idFloatingButtonGetFromGalleryPictureProduct);
         //botonCancelar = findViewById(R.id.idFloatingButtonCancelarProducto);
-
-
-
 
         //asignar nombres de las tiendas a mostrar en el select
         TiendaController tiendaController = new TiendaController();
@@ -194,16 +197,14 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         botonFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    File imagen = createImageFile();
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
-                            imagen);
-                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                imageUri = getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(intent, CAMERA_REQUEST_CODE);
             }
         });
 
@@ -211,9 +212,11 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         botonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("CLICK EN BOTON GUARDAR");
                 Producto producto = new Producto();
                 producto.setCodigo(codigo.getText().toString());
                 producto.setNombre(nombre.getText().toString());
+                producto.setPrecio(precio.getText().toString());
                 producto.setDescripcion(descripcion.getText().toString());
                 producto.setAsociacion_id(USUARIO_ACTUAL.getParametrosUsuarioActual().getAcceso_asociacion_id());
 
@@ -221,85 +224,108 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                 producto.setTienda_id(valorComboPTienda);
                 producto.setProductosTipo_id(valorComboProductoTipo);
 
-                //imagen
+                if(TextUtils.isEmpty(codigo.getText()) || TextUtils.isEmpty(nombre.getText()) || thumbnail == null){
+                    Toast.makeText(getApplicationContext(), "Faltan campos obligatorios", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Envia el producto y lo guarda junto la subida de la imagen
+                    subirImagenStorage(producto);
+                }
 
-                ProductoController productoController = new ProductoController();
-                productoController.save(producto);
 
-                subirImagenStorage(producto);
 
             }
         });
-        /*botonCancelar.setOnClickListener(new View.OnClickListener() {
+
+        //DETECTAMOS LOS CAMPOS QUE HAY QUE RELLENAR OBLIGATORIOS
+        /*codigo.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                activarDesactivarBoton(codigo.getText().toString(), nombre.getText().toString(), botonGuardar);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        nombre.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                activarDesactivarBoton(codigo.getText().toString(), nombre.getText().toString(), botonGuardar);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });*/
+
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*System.out.println("ACTIVITY RESULT");
-        System.out.println("REQUEST CODE " + requestCode);
-        System.out.println("RESULT CODE " + resultCode);
-        System.out.println("DATA " + data.getExtras());
-        System.out.println("STORAGE REF " + mStorageRef);*/
+        switch (requestCode) {
 
+            case CAMERA_REQUEST_CODE:
+                if (requestCode == CAMERA_REQUEST_CODE)
+                    if (resultCode == Activity.RESULT_OK) {
+                        try {
+                            thumbnail = MediaStore.Images.Media.getBitmap(
+                                    getContentResolver(), imageUri);
+                            imageurl = getRealPathFromURI(imageUri);
 
-        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-            System.out.println("ENTRA............................s");
-            bitImagenProducto = (Bitmap) data.getExtras().get("data");
-            imagenProducto.setImageBitmap(bitImagenProducto);
-            /*Uri uri = getImageUri(this, bitmap);
+                            Matrix matrix = new Matrix();
+                            matrix.postRotate(90);
+                            thumbnail = Bitmap.createBitmap(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight(), matrix, true);
 
-            StorageReference filepath = mStorageRef.child("photos").child("producto").child("prueba").child(uri.getLastPathSegment());
+                            imagenProducto.setImageBitmap(thumbnail);
+                            //imagenProducto.setImageURI(imageUri);
 
-            System.out.println("LA URL DE LA FOTO ES:"+filepath.getDownloadUrl());
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
-                    Toast.makeText(getApplicationContext(), "Carga finalizada...", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    System.out.println("ERROR SUBIR IMAGEN");
-                }
-            });*/
+                    }
         }
     }
 
-    private Uri getImageUri(Context context, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
     private void subirImagenStorage(final Producto producto){
-        Uri uri = getImageUri(this, bitImagenProducto);
 
-        final StorageReference filepath = mStorageRef.child("photos").child("productos").child(producto.get_id()).child(producto.get_id());
-        //urlPictureProduct = String.valueOf(filepath.getDownloadUrl());
-        System.out.println("LA URL DE LA FOTO ES:"+filepath);
+        final StorageReference filepath = mStorageRef.child("productos").child(producto.get_id()).child(producto.get_id());
+        Uri uri = getImageUri(getApplicationContext(), thumbnail);
+
         filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //urlPictureProduct = filepath.getDownloadUrl();
-                //producto.setImagen(filepath.getPath());
-                //ProductoController productoController = new ProductoController();
 
                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         producto.setImagen(uri.toString());
+                        /*ProductoController productoController = new ProductoController();
+                        productoController.update(producto);*/
+
                         ProductoController productoController = new ProductoController();
-                        productoController.update(producto);
-                        Toast.makeText(getApplicationContext(), "Carga finalizada...", Toast.LENGTH_SHORT).show();
+                        productoController.save(producto);
+
+                        Toast.makeText(getApplicationContext(), "Guardado Finalizado", Toast.LENGTH_SHORT).show();
+
+                        //Cambiar a MENU PRINCIPAL
+                        Intent i = new Intent(getApplicationContext(), AsociacionMenuPrincipal.class);
+                        startActivity(i);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -307,14 +333,9 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                         // Handle any errors
                         System.out.println("ERROR DE: "+producto.getNombre());
                         System.out.println("ERROR URL: "+producto.getImagen());
-                        Toast.makeText(getApplicationContext(), "Error al cargaar item imagen", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Error al guardar", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-                //productoController.update(producto);
-                //Toast.makeText(getApplicationContext(), "Carga finalizada...", Toast.LENGTH_SHORT).show();
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -323,28 +344,30 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
             }
         });
-        //return String.valueOf(filepath.getDownloadUrl());
-        // /photos/productos/06d35521-0490-47ad-89a6-a9feb1330e09/06d35521-0490-47ad-89a6-a9feb1330e09
-        //"/photos/productos/10678594-60bf-4fb1-bf75-4562f9705248/10678594-60bf-4fb1-bf75-4562f9705248"
-        //"/photos/productos/06d35521-0490-47ad-89a6-a9feb1330e09/06d35521-0490-47ad-89a6-a9feb1330e09"
-        //"gs://visitstoreapp.appspot.com/photos/productos/1e13af45-70a2-44ac-91c5-6b1f099c9395/1e13af45-70a2-44ac-91c5-6b1f099c9395"
-        //https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/photos%2Fproductos%2F1e13af45-70a2-44ac-91c5-6b1f099c9395%2F1e13af45-70a2-44ac-91c5-6b1f099c9395?alt=media&token=b5941c33-ece4-4c8a-80e9-184f3f5f1f77
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private void activarDesactivarBoton(String codigo, String nombre, FloatingActionButton buttonLogIn) {
+        if(codigo.matches("") || nombre.matches("")){
+            buttonLogIn.setEnabled(false);
+        }else{
+            buttonLogIn.setEnabled(true);
+        }
     }
 
 }

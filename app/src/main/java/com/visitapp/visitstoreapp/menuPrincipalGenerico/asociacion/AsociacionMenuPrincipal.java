@@ -60,17 +60,34 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asociacion_menu_principal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        String estadoActual = ((VariablesGlobales) getApplication()).getMenuActual();
+        System.out.println("ENTRA EN MENU PRINCIPAL ----------------"+estadoActual);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        switch (estadoActual){
+            case "login":
+                break;
+            case "formularioProductos":
+                goToFragmentProductosListado();
+                break;
+            default:
+                goToFragmentTiendasListado();
+                break;
+        }
+
 
         listadoTiendas = findViewById(R.id.idListaTiendas);
         listadoTiendas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,6 +97,8 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
             }
         });
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -191,22 +210,23 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
 
         switch (id){
             case R.id.nav_asociacion_tiendas:
-                System.out.println("CLICK EN MENU DE TINDAS");
+                goToFragmentTiendasListado();
+                /*System.out.println("CLICK EN MENU DE TINDAS");
                 AsociacionFragmentPrincipal fragment = new AsociacionFragmentPrincipal();
                 fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
 
                 break;
             case R.id.nav_asociacion_productos:
-                System.out.println("CLICK EN MENU DE PRODUCTOS");
+                goToFragmentProductosListado();
+               /* System.out.println("CLICK EN MENU DE PRODUCTOS");
                 AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
                 fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
                 break;
         }
 
@@ -227,6 +247,24 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void goToFragmentTiendasListado() {
+        System.out.println("CLICK EN MENU DE TINDAS");
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        AsociacionFragmentPrincipal fragment = new AsociacionFragmentPrincipal();
+        fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void goToFragmentProductosListado() {
+        System.out.println("CLICK EN MENU DE PRODUCTOS");
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
+        fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
+        fragmentTransaction.commit();
     }
 }
 

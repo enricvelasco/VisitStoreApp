@@ -66,6 +66,9 @@ public class PantallaLogIn extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_mail_password);
+
+        ((VariablesGlobales) getApplication()).setMenuActual("login");
+
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
         createNewUser = findViewById(R.id.linkCreateNewUser);
