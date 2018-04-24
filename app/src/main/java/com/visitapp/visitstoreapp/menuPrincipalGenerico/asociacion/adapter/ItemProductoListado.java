@@ -97,7 +97,7 @@ public class ItemProductoListado extends BaseAdapter {
         precio.setText("€€€");*/
         if(producto.getImagen() != null){
             //Picasso.with(context).load("https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/tienda%2Fbf65155f-75de-45a9-b4e0-63ee60884db6%2Flogo_store_1.jpg?alt=media&token=27194309-19ab-42a1-bbe2-c15dc0983d69").into(imageView);
-            Picasso.with(context).load(producto.getImagen()).resize(320,480).centerCrop().into(imageView);
+            Picasso.with(context).load(producto.getImagen()).resize(768,768).centerCrop().into(imageView);
         }
 
         return convertView;

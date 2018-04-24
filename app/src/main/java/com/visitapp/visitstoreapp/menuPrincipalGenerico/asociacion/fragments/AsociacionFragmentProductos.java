@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
@@ -30,6 +31,7 @@ import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 public class AsociacionFragmentProductos extends Fragment {
     GridView gridProductos;
     FloatingActionButton botonAddProducto;
+    List<Producto> productoList;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -52,12 +54,12 @@ public class AsociacionFragmentProductos extends Fragment {
 
             @Override
             public void onSuccess(DataSnapshot data) {
-                List<Producto> lista = new ArrayList<>();
+                productoList = new ArrayList<>();
                 for(DataSnapshot element : data.getChildren()){
                     Producto producto = element.getValue(Producto.class);
-                    lista.add(producto);
+                    productoList.add(producto);
                 }
-                ItemProductoListado item = new ItemProductoListado(lista, view.getContext());
+                ItemProductoListado item = new ItemProductoListado(productoList, view.getContext());
                 gridProductos.setAdapter(item);
             }
 
@@ -98,6 +100,21 @@ public class AsociacionFragmentProductos extends Fragment {
                 System.out.println("TENDRIA QUE CAMBIAR DE ACTIVITY");
                 Intent a = new Intent(getActivity(), AsociacionProductoFormulario.class);
                 startActivity(a);
+            }
+        });
+
+        gridProductos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("LONG CLICK EN ITEM"+productoList.get(position).getNombre());
+                return false;
+            }
+        });
+
+        gridProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("CLICK EN ITEM"+productoList.get(position).getNombre());
             }
         });
     }

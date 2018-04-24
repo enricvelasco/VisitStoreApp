@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.adapter.spinner.ItemSpinnerNoPicture;
@@ -291,7 +292,8 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                             matrix.postRotate(90);
                             thumbnail = Bitmap.createBitmap(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight(), matrix, true);
 
-                            imagenProducto.setImageBitmap(thumbnail);
+                            //imagenProducto.setImageBitmap(thumbnail);
+                            Picasso.with(getApplicationContext()).load(imageUri).rotate(90f).resize(768,768).centerCrop().into(imagenProducto);
                             //imagenProducto.setImageURI(imageUri);
 
                         } catch (Exception e) {
