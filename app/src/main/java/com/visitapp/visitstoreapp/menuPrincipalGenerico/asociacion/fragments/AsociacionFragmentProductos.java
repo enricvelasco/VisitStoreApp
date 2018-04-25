@@ -1,5 +1,6 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +35,7 @@ public class AsociacionFragmentProductos extends Fragment {
     GridView gridProductos;
     FloatingActionButton botonAddProducto;
     List<Producto> productoList;
+    private PopupWindow popUpWindow;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -107,16 +111,43 @@ public class AsociacionFragmentProductos extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("LONG CLICK EN ITEM"+productoList.get(position).getNombre());
+
+                final Dialog dialog = new Dialog(getActivity());
+                dialog.setContentView(R.layout.pop_up_edicion_producto_listado);
+                dialog.show();
+                TextView tituloProductoPopUp = dialog.findViewById(R.id.idTituloPopUpProductoListado);
+                FloatingActionButton botonEdicion = dialog.findViewById(R.id.idFloatButtonEdicionProductoPopUp);
+                FloatingActionButton botonDelete = dialog.findViewById(R.id.idFloatButtonDeleteProductoListadoPopUp);
+                String concatTitulo = productoList.get(position).getCodigo()+" - "+productoList.get(position).getNombre();
+                tituloProductoPopUp.setText(concatTitulo);
+                botonEdicion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        System.out.println("EDICION");
+                    }
+                });
+
+                botonDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        System.out.println("DELETE");
+                    }
+                });
+
+
+
+
+
                 return false;
             }
         });
 
-        gridProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*gridProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("CLICK EN ITEM"+productoList.get(position).getNombre());
             }
-        });
+        });*/
     }
 
     /*private void goToCrearNuevoProducto() {
