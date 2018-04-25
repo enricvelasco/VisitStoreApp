@@ -84,7 +84,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="Nombre"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:textColorLink="@android:color/holo_red_light" />
 
                     <EditText
                         android:id="@+id/idPrecioProductoFormulario"
@@ -96,7 +97,8 @@
                         android:ems="10"
                         android:hint="Precio"
                         android:inputType="numberDecimal"
-                        android:textAlignment="textEnd" />
+                        android:textAlignment="textEnd"
+                        android:textColorLink="@android:color/holo_blue_dark" />
 
                     <TextView
                         android:id="@+id/textView3"
@@ -125,7 +127,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="Codigo"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:textColorLink="@android:color/holo_red_light" />
 
                     <Spinner
                         android:id="@+id/idTiendaSelect"
@@ -148,7 +151,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Descripcion"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:textColorLink="@android:color/holo_blue_dark" />
 
                 <Spinner
                     android:id="@+id/idProductoTipoSelect"
