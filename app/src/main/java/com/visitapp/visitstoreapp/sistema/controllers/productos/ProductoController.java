@@ -35,9 +35,9 @@ public class ProductoController {
         });
     }
 
-    public void read(Producto producto, final OnGetDataListener listener){
+    public void read(String idProducto, final OnGetDataListener listener){
         listener.onStart();
-        myRef.child(producto.get_id()).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child(idProducto).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);
@@ -69,8 +69,14 @@ public class ProductoController {
 
     }
 
-    public void delete(Producto producto){
-        myRef.child(producto.get_id()).removeValue();
+    public Boolean delete(String idProducto){
+        try {
+            myRef.child(idProducto).removeValue();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void queryEquals(String campoFiltrar, String valorEqual, final OnGetDataListener listener){

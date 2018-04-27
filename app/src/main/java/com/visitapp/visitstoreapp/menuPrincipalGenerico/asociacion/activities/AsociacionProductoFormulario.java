@@ -82,6 +82,11 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
     Bitmap thumbnail = null;
     String imageurl;
 
+    String estadoFormulario;
+
+    ProductoTipoController productoTipoController = new ProductoTipoController();
+    ProductoController productoController = new ProductoController();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,24 +100,49 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final UsuarioParametros usuarioParametros = USUARIO_ACTUAL.getParametrosUsuarioActual();
 
-        //campos formulario
-        codigo = findViewById(R.id.idCodigoProductoFormulario);
-        //codigo = findViewById(R.id.idCodigoProductoFormulario);
-        nombre = findViewById(R.id.idNombreProductoFormulario);
-        precio = findViewById(R.id.idPrecioProductoFormulario);
-        descripcion = findViewById(R.id.idDescripcionProductoFormulario);
-        selectTienda = findViewById(R.id.idTiendaSelect);
-        selectProductoTipo = findViewById(R.id.idProductoTipoSelect);
-        imagenProducto = findViewById(R.id.idImagenProducto);
+        declaroCampos();
 
-        //botones formulario
-        /*botonGetBarCode = findViewById(R.id.idFloatigButtonGetBarCodeProducto);
-        botonGetBarCode = findViewById(R.id.idFloatingButtonGetQRCodeProducto);*/
-        botonGuardar = findViewById(R.id.idFloatingButtonGuardarProducto);
-        //botonGuardar.setEnabled(false);
-        botonFoto = findViewById(R.id.idFloattingButtonTakePictureProducto);
-        botonGaleria = findViewById(R.id.idFloatingButtonGetFromGalleryPictureProduct);
-        //botonCancelar = findViewById(R.id.idFloatingButtonCancelarProducto);
+        Intent myIntent = getIntent(); // gets the previously created intent
+        String idEdicion = myIntent.getStringExtra("producto_id");
+
+        if(idEdicion == null){
+            System.out.println("ESTADO NUEVO");
+            estadoFormulario = "nuevo";
+        }else{
+            System.out.println("ID PRODUCTO A EDITAR "+idEdicion);
+            System.out.println("ESTADO EDICION");
+            estadoFormulario = "edicion";
+
+            productoController.read(idEdicion, new OnGetDataListener() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(DataSnapshot data) {
+                    Producto productoEdit = data.getValue(Producto.class);
+                    codigo.setText(productoEdit.getCodigo());
+                    //codigo = findViewById(R.id.idCodigoProductoFormulario);
+                    nombre.setText(productoEdit.getNombre());
+                    precio.setText(productoEdit.getPrecio());
+                    descripcion.setText(productoEdit.getDescripcion());
+
+                    Picasso.with(getApplicationContext()).load(productoEdit.getImagen()).resize(768,768).centerCrop().into(imagenProducto);
+                    /*selectTienda.set
+                    selectProductoTipo
+                    imagenProducto*/
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+
 
         //asignar nombres de las tiendas a mostrar en el select
         TiendaController tiendaController = new TiendaController();
@@ -141,7 +171,11 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                 selectTienda.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        valorComboPTienda = listadoDeTiendas.get(position).get("id").toString();
+                        if(estadoFormulario.equals("edicion")){
+                            //valorComboPTienda = listadoDeTiendas.stream().filter(item -> item.get))
+                        }else if(estadoFormulario.equals("nuevo")){
+                            valorComboPTienda = listadoDeTiendas.get(position).get("id").toString();
+                        }
                     }
 
                     @Override
@@ -155,7 +189,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
             }
         });
 
-        ProductoTipoController productoTipoController = new ProductoTipoController();
+
         productoTipoController.getList(new OnGetDataListener() {
             @Override
             public void onStart() {
@@ -275,6 +309,25 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    private void declaroCampos() {
+        //campos formulario
+        codigo = findViewById(R.id.idCodigoProductoFormulario);
+        //codigo = findViewById(R.id.idCodigoProductoFormulario);
+        nombre = findViewById(R.id.idNombreProductoFormulario);
+        precio = findViewById(R.id.idPrecioProductoFormulario);
+        descripcion = findViewById(R.id.idDescripcionProductoFormulario);
+        selectTienda = findViewById(R.id.idTiendaSelect);
+        selectProductoTipo = findViewById(R.id.idProductoTipoSelect);
+        imagenProducto = findViewById(R.id.idImagenProducto);
+
+        //botones formulario
+        /*botonGetBarCode = findViewById(R.id.idFloatigButtonGetBarCodeProducto);
+        botonGetBarCode = findViewById(R.id.idFloatingButtonGetQRCodeProducto);*/
+        botonGuardar = findViewById(R.id.idFloatingButtonGuardarProducto);
+        botonFoto = findViewById(R.id.idFloattingButtonTakePictureProducto);
+        botonGaleria = findViewById(R.id.idFloatingButtonGetFromGalleryPictureProduct);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -320,7 +373,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                         /*ProductoController productoController = new ProductoController();
                         productoController.update(producto);*/
 
-                        ProductoController productoController = new ProductoController();
+                        //ProductoController productoController = new ProductoController();
                         productoController.save(producto);
 
                         Toast.makeText(getApplicationContext(), "Guardado Finalizado", Toast.LENGTH_SHORT).show();

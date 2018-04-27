@@ -41,7 +41,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     app:backgroundTint="@android:color/holo_blue_light"
-                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+                    app:srcCompat="@drawable/ic_edit_white" />
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/idFloatButtonDeleteProductoListadoPopUp"
@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     app:backgroundTint="@android:color/holo_red_light"
-                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+                    app:srcCompat="@drawable/ic_trash_white" />
             </LinearLayout>
         </LinearLayout>
 

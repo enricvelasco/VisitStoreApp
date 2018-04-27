@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,9 +49,11 @@ public class AsociacionFragmentProductos extends Fragment {
         final UsuarioParametros usuarioParametros = USUARIO_ACTUAL.getParametrosUsuarioActual();
         botonAddProducto = view.findViewById(R.id.idButtonAddProducto);
         gridProductos = view.findViewById(R.id.idGridViewProductosAsociacion);
-        ProductoController productoController = new ProductoController();
+        final ProductoController productoController = new ProductoController();
 
-        productoController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
+        cargarListadoProductos(productoController, usuarioParametros);
+
+        /*productoController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
             @Override
             public void onStart() {
 
@@ -71,7 +74,7 @@ public class AsociacionFragmentProductos extends Fragment {
             public void onFailed(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
         /*productoController.getList(new OnGetDataListener() {
             @Override
@@ -109,7 +112,7 @@ public class AsociacionFragmentProductos extends Fragment {
 
         gridProductos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 System.out.println("LONG CLICK EN ITEM"+productoList.get(position).getNombre());
 
                 final Dialog dialog = new Dialog(getActivity());
@@ -131,6 +134,25 @@ public class AsociacionFragmentProductos extends Fragment {
                     @Override
                     public void onClick(View v) {
                         System.out.println("DELETE");
+                        boolean deleted = productoController.delete(productoList.get(position).get_id());
+                        if(deleted){
+                            Toast.makeText(getActivity(), "Eliminar", Toast.LENGTH_SHORT).show();
+                            cargarListadoProductos(productoController, usuarioParametros);
+                            dialog.dismiss();
+                        }else{
+                            Toast.makeText(getActivity(), "Error al eliminar", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+                botonEdicion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //abrir la edicion
+                        Intent intent = new Intent(getActivity(), AsociacionProductoFormulario.class);
+                        intent.putExtra("producto_id",productoList.get(position).get_id());
+                        startActivity(intent);
                     }
                 });
 
@@ -148,6 +170,31 @@ public class AsociacionFragmentProductos extends Fragment {
                 System.out.println("CLICK EN ITEM"+productoList.get(position).getNombre());
             }
         });*/
+    }
+
+    private void cargarListadoProductos(ProductoController productoController, UsuarioParametros usuarioParametros) {
+        productoController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                productoList = new ArrayList<>();
+                for(DataSnapshot element : data.getChildren()){
+                    Producto producto = element.getValue(Producto.class);
+                    productoList.add(producto);
+                }
+                ItemProductoListado item = new ItemProductoListado(productoList, getActivity());
+                gridProductos.setAdapter(item);
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /*private void goToCrearNuevoProducto() {
