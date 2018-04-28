@@ -1,17 +1,21 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities.AsociacionTiendaFormulario;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.adapter.ItemTiendaListado;
 import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
 import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaSectorController;
@@ -26,6 +30,7 @@ import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
 public class AsociacionFragmentPrincipal extends Fragment{
     ListView listadoTiendas;
+    FloatingActionButton botonAnadir;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class AsociacionFragmentPrincipal extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         final UsuarioParametros usuarioParametros = USUARIO_ACTUAL.getParametrosUsuarioActual();
         listadoTiendas = view.findViewById(R.id.idListaTiendas);
+        botonAnadir = view.findViewById(R.id.idButtonAddNuevaTienda);
 
         TiendaController tiendaController = new TiendaController();
         tiendaController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
@@ -62,32 +68,15 @@ public class AsociacionFragmentPrincipal extends Fragment{
 
             }
         });
-        /*tiendaController.getList(new OnGetDataListener() {
+
+        botonAnadir.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStart() {
-
+            public void onClick(View v) {
+                //Cambiar a MENU PRINCIPAL
+                Intent i = new Intent(getActivity(), AsociacionTiendaFormulario.class);
+                startActivity(i);
             }
+        });
 
-            @Override
-            public void onSuccess(DataSnapshot data) {
-                System.out.println("HACE EL GET DE TIENDAS "+data.getValue());
-                List<Tienda> listadoTiendasList = new ArrayList<>();
-                for(DataSnapshot element : data.getChildren()){
-                    Tienda tienda = element.getValue(Tienda.class);
-                    System.out.println("TIENDA---"+tienda.getAsociacion_id());
-                    if(tienda.getAsociacion_id().equals(usuarioParametros.getAcceso_asociacion_id())){
-                        System.out.println("---AÑADE---");
-                        listadoTiendasList.add(tienda);
-                    }
-                }
-                ItemTiendaListado itemTiendaListado = new ItemTiendaListado(listadoTiendasList, view.getContext());
-                listadoTiendas.setAdapter(itemTiendaListado);
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-
-            }
-        });*/
     }
 }

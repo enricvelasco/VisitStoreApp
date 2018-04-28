@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Parametros Tienda"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextFormularioTiendaCodigo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Código"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/editTextFormularioTiendaNombreComercial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Nombre Comercial"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editTextFormularioTiendaNombreFiscal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Nombre Fiscal"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editTextFormularioTiendaNif"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="NIF"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editTextFormularioTiendaEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/editTextFormularioTiendaTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Telefono"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/editTextFormularioTiendaDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Direccion"
+                android:inputType="textPersonName" />
+
+            <Switch
+                android:id="@+id/switchFormularioTiendaPermitePromociones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Permite Promociones" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/idButtonGuardarCambiosTienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:backgroundTint="@android:color/holo_green_light"
+                app:srcCompat="@drawable/ic_ok_white" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/idCanelarCambiosTienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:backgroundTint="@android:color/holo_orange_light"
+                app:srcCompat="@drawable/ic_cancel_white" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

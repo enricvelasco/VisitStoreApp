@@ -21,6 +21,7 @@ public class Tienda{
     private String direccion;
     private String logo;
     private String asociacion_id;
+    private Boolean permitePromociones;
     private Map sectores_tienda;
     private Map productosTipo;
 
@@ -151,5 +152,13 @@ public class Tienda{
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public Boolean getPermitePromociones() {
+        return permitePromociones;
+    }
+
+    public void setPermitePromociones(Boolean permitePromociones) {
+        this.permitePromociones = permitePromociones;
     }
 }
