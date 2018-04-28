@@ -13,22 +13,22 @@ import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
 public class Tienda{
 
-    String codigo;
-    String nif;
-    String nombreFiscal;
-    String nombrePublico;
-    String observaciones;
-    String direccion;
-    String logo;
-    String asociacion_id;
-    Map sectores_tienda;
-    Map productosTipo;
+    private String codigo;
+    private String nif;
+    private String nombreFiscal;
+    private String nombrePublico;
+    private String observaciones;
+    private String direccion;
+    private String logo;
+    private String asociacion_id;
+    private Map sectores_tienda;
+    private Map productosTipo;
 
-    String _id = UUID.randomUUID().toString();
-    Date fechaCreacion = new Date();
-    Date fechaModificacion = new Date();
-    UsuarioParametros usuarioCreacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
-    UsuarioParametros usuarioModificacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
+    private String _id = UUID.randomUUID().toString();
+    private Date fechaCreacion = new Date();
+    private Date fechaModificacion = new Date();
+    private UsuarioParametros usuarioCreacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
+    private UsuarioParametros usuarioModificacion = USUARIO_ACTUAL.getParametrosUsuarioActual();
 
     public Tienda() {
     }

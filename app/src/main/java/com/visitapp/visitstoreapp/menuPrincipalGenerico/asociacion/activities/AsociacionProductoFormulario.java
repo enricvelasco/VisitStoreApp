@@ -1,11 +1,13 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,9 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +41,8 @@ import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.adapter.spinner.ItemSpinnerNoPicture;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.adapter.ItemProductoListado;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.adapter.ItemProductoTipoListado;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.adapter.ItemTiendaListado;
 import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoController;
 import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoTipoController;
 import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
@@ -64,9 +70,6 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
     private TextView seleccionTipoProducto;
     private TextView seleccionTienda;
 
-    private Spinner selectTienda;
-    private Spinner selectProductoTipo;
-
     FloatingActionButton botonGuardar;
     FloatingActionButton botonCancelar;
     FloatingActionButton botonGetBarCode;
@@ -92,13 +95,26 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
 
     String estadoFormulario;
 
-    ProductoTipoController productoTipoController = new ProductoTipoController();
-    ProductoController productoController = new ProductoController();
+
 
     List<Producto> productoList;
 
-    GridView gridProductosPopUp;
+    //ListView listProductosPopUp;
 
+    List<Producto> listadoDeProductos = new ArrayList<>();
+    List<Tienda> listadoDeTiendas = new ArrayList<>();
+    List<ProductoTipo> listadoTiposProducto = new ArrayList<>();
+
+    TiendaController tiendaController = new TiendaController();
+    ProductoTipoController productoTipoController = new ProductoTipoController();
+    ProductoController productoController = new ProductoController();
+
+    //Dialog dialog;
+
+    ItemProductoTipoListado itemTipoProducto;
+    ListView listProductosPopUp;
+
+    String idEdicion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,12 +126,15 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         setContentView(R.layout.activity_asociacion_producto_formulario);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final UsuarioParametros usuarioParametros = USUARIO_ACTUAL.getParametrosUsuarioActual();
+        //final UsuarioParametros usuarioParametros = USUARIO_ACTUAL.getParametrosUsuarioActual();
+        //dialog = new Dialog(this);
 
         declaroCampos();
 
+        hacerPeticionesCamposSeleccionables();
+
         Intent myIntent = getIntent(); // gets the previously created intent
-        final String idEdicion = myIntent.getStringExtra("producto_id");
+        idEdicion = myIntent.getStringExtra("producto_id");
 
         if(idEdicion == null){
             System.out.println("ESTADO NUEVO");
@@ -141,10 +160,25 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                     descripcion.setText(productoEdit.getDescripcion());
 
                     Picasso.with(getApplicationContext()).load(productoEdit.getImagen()).resize(768,768).centerCrop().into(imagenProducto);
-                    //selectTienda.setPos
-                    /*selectTienda.set
-                    selectProductoTipo
-                    imagenProducto*/
+
+                    //asigna los campos de seleccion
+                    for (ProductoTipo pt : listadoTiposProducto){
+                        if(pt.get_id().equals(productoEdit.getProductosTipo_id())){
+                            String textMostrar = pt.getCodigo()+"-"+pt.getDescripcion();
+                            seleccionTipoProducto.setText(textMostrar);
+                            valorComboProductoTipo = pt.get_id();
+                        }
+                    }
+
+                    for(Tienda tienda:listadoDeTiendas){
+                        if(tienda.get_id().equals(productoEdit.getTienda_id())){
+                            String textMostrar = tienda.getCodigo()+"-"+tienda.getNombrePublico();
+                            seleccionTienda.setText(textMostrar);
+                            valorComboPTienda = tienda.get_id();
+                        }
+                    }
+                    imagenProducto.buildDrawingCache();
+                    thumbnail = imagenProducto.getDrawingCache();
                 }
 
                 @Override
@@ -153,104 +187,6 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                 }
             });
         }
-
-
-
-
-        //asignar nombres de las tiendas a mostrar en el select
-        TiendaController tiendaController = new TiendaController();
-        tiendaController.queryEquals("asociacion_id", USUARIO_ACTUAL.getParametrosUsuarioActual().getAcceso_asociacion_id(), new OnGetDataListener() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(DataSnapshot data) {
-                final List<Map> listadoDeTiendas = new ArrayList<>();
-
-                for(DataSnapshot element:data.getChildren()){
-                    Map<String,String> object = new HashMap();
-                    Tienda tienda = element.getValue(Tienda.class);
-                    System.out.println("ASIGNA TIENDA"+tienda.getNombrePublico());
-                    object.put("codigo", tienda.getCodigo());
-                    object.put("nombre", tienda.getNombrePublico());
-                    object.put("id", tienda.get_id());
-                    listadoDeTiendas.add(object);
-                }
-                System.out.println("EL LISTADO DE LAS TIENDAS:"+listadoDeTiendas);
-                ItemSpinnerNoPicture itemTiendaListado = new ItemSpinnerNoPicture(listadoDeTiendas, getBaseContext());
-                /*selectTienda.setAdapter(itemTiendaListado);
-
-                selectTienda.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if(estadoFormulario.equals("edicion")){
-                            System.out.println("ENTRA EN ITEM SELECTED!!!!"+position);
-                            //valorComboPTienda = listadoDeTiendas.stream().filter(item -> item.get))
-
-                            for(Map map : listadoDeTiendas){
-                                if(map.get("id").equals(idEdicion)){
-                                    //valorComboPTienda
-
-                                }
-                            }
-
-                        }else if(estadoFormulario.equals("nuevo")){
-                            valorComboPTienda = listadoDeTiendas.get(position).get("id").toString();
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });*/
-            }
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        productoTipoController.getList(new OnGetDataListener() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(DataSnapshot data) {
-                final List<Map> productoTipoList = new ArrayList<>();
-
-                for(DataSnapshot element:data.getChildren()){
-                    Map<String,String> object = new HashMap();
-                    ProductoTipo productoTipo = element.getValue(ProductoTipo.class);
-                    object.put("codigo", productoTipo.getCodigo());
-                    object.put("nombre", productoTipo.getDescripcion());
-                    object.put("id", productoTipo.get_id());
-                    productoTipoList.add(object);
-                }
-                ItemSpinnerNoPicture itemTiendaListado = new ItemSpinnerNoPicture(productoTipoList, getBaseContext());
-                /*selectProductoTipo.setAdapter(itemTiendaListado);
-                selectProductoTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        valorComboProductoTipo = productoTipoList.get(position).get("id").toString();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });*/
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-
-            }
-        });
 
         botonFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,16 +224,32 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                     //Envia el producto y lo guarda junto la subida de la imagen
                     subirImagenStorage(producto);
                 }
-
-
-
             }
         });
 
         seleccionTipoProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("CLICK EN EL TIPO DE PROUCTO");
+                System.out.println("CLICK EN EL TIPO DE PROUCTO"+listadoTiposProducto.size());
+
+                final Dialog dialog = new Dialog(AsociacionProductoFormulario.this);
+                dialog.setContentView(R.layout.pop_up_seleccion_producto_formulario);
+
+                ListView listProductosPopUp = dialog.findViewById(R.id.idListaProductosTipoPopUp);
+                ItemProductoTipoListado item2 = new ItemProductoTipoListado(listadoTiposProducto, AsociacionProductoFormulario.this);
+                listProductosPopUp.setAdapter(item2);
+                dialog.show();
+
+                listProductosPopUp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        ProductoTipo productoTipoSeleccionado = listadoTiposProducto.get(position);
+                        String visualizacionTipoProd = productoTipoSeleccionado.getCodigo()+"-"+productoTipoSeleccionado.getDescripcion();
+                        seleccionTipoProducto.setText(visualizacionTipoProd);
+                        valorComboProductoTipo = productoTipoSeleccionado.get_id();
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -305,45 +257,72 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 System.out.println("CLICK ON TIENDA");
+                //listadoDeTiendas
+                final Dialog dialogTiendas = new Dialog(AsociacionProductoFormulario.this);
+                dialogTiendas.setContentView(R.layout.pop_up_seleccion_producto_formulario);
+                ListView listTiendasPopUp = dialogTiendas.findViewById(R.id.idListaProductosTipoPopUp);
+                ItemTiendaListado itemTienda = new ItemTiendaListado(listadoDeTiendas, AsociacionProductoFormulario.this);
+                listTiendasPopUp.setAdapter(itemTienda);
+                dialogTiendas.show();
+
+                listTiendasPopUp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Tienda tienda = listadoDeTiendas.get(position);
+                        String visualizacionTienda = tienda.getCodigo()+"-"+tienda.getNombrePublico();
+                        seleccionTienda.setText(visualizacionTienda);
+                        valorComboPTienda = tienda.get_id();
+                        dialogTiendas.dismiss();
+                    }
+                });
             }
         });
-
-        //DETECTAMOS LOS CAMPOS QUE HAY QUE RELLENAR OBLIGATORIOS
-        /*codigo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                activarDesactivarBoton(codigo.getText().toString(), nombre.getText().toString(), botonGuardar);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        nombre.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                activarDesactivarBoton(codigo.getText().toString(), nombre.getText().toString(), botonGuardar);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void hacerPeticionesCamposSeleccionables() {
+        tiendaController.queryEquals("asociacion_id", USUARIO_ACTUAL.getParametrosUsuarioActual().getAcceso_asociacion_id(), new OnGetDataListener() {
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                for(DataSnapshot item : data.getChildren()){
+                    Tienda tienda = item.getValue(Tienda.class);
+                    listadoDeTiendas.add(tienda);
+                }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
+
+        productoTipoController.getList(new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                for(DataSnapshot item : data.getChildren()){
+                    System.out.println("ITEM: "+item);
+                    ProductoTipo productoTipo = item.getValue(ProductoTipo.class);
+                    listadoTiposProducto.add(productoTipo);
+                }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void declaroCampos() {
@@ -410,11 +389,13 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         producto.setImagen(uri.toString());
-                        /*ProductoController productoController = new ProductoController();
-                        productoController.update(producto);*/
+                        if(estadoFormulario.equals("nuevo")){
+                            productoController.save(producto);
+                        }else if(estadoFormulario.equals("edicion")){
+                            producto.set_id(idEdicion);
+                            productoController.update(producto);
+                        }
 
-                        //ProductoController productoController = new ProductoController();
-                        productoController.save(producto);
 
                         Toast.makeText(getApplicationContext(), "Guardado Finalizado", Toast.LENGTH_SHORT).show();
 
@@ -464,30 +445,4 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
             buttonLogIn.setEnabled(true);
         }
     }
-
-    private void cargarListadoProductos(ProductoController productoController, UsuarioParametros usuarioParametros) {
-        productoController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(DataSnapshot data) {
-                productoList = new ArrayList<>();
-                for(DataSnapshot element : data.getChildren()){
-                    Producto producto = element.getValue(Producto.class);
-                    productoList.add(producto);
-                }
-                ItemProductoListado item = new ItemProductoListado(productoList, getApplicationContext());
-                gridProductosPopUp.setAdapter(item);
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 }
