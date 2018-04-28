@@ -120,7 +120,7 @@
 
                     <EditText
                         android:id="@+id/idCodigoProductoFormulario"
-                        android:layout_width="350dp"
+                        android:layout_width="112dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_marginStart="5dp"
@@ -130,15 +130,18 @@
                         android:inputType="number"
                         android:textColorLink="@android:color/holo_red_light" />
 
-                    <Spinner
-                        android:id="@+id/idTiendaSelect"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
+                    <TextView
+                        android:id="@+id/idSeleccionTienda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
-                        android:textAlignment="center" />
+                        android:background="@android:color/darker_gray"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:text="- Selec. Tienda -"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -154,14 +157,20 @@
                     android:inputType="textPersonName"
                     android:textColorLink="@android:color/holo_blue_dark" />
 
-                <Spinner
-                    android:id="@+id/idProductoTipoSelect"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/idSeleccionTipoProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@android:color/darker_gray"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="- Selec. tipo prod. -"
+                android:textAlignment="center"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

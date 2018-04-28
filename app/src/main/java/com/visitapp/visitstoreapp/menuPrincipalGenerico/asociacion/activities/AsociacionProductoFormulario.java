@@ -18,8 +18,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +36,7 @@ import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.adapter.spinner.ItemSpinnerNoPicture;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.adapter.ItemProductoListado;
 import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoController;
 import com.visitapp.visitstoreapp.sistema.controllers.productos.ProductoTipoController;
 import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
@@ -48,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
@@ -56,6 +60,10 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
     private EditText nombre;
     private EditText descripcion;
     private EditText precio;
+
+    private TextView seleccionTipoProducto;
+    private TextView seleccionTienda;
+
     private Spinner selectTienda;
     private Spinner selectProductoTipo;
 
@@ -87,6 +95,10 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
     ProductoTipoController productoTipoController = new ProductoTipoController();
     ProductoController productoController = new ProductoController();
 
+    List<Producto> productoList;
+
+    GridView gridProductosPopUp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,14 +108,14 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         setContentView(R.layout.activity_asociacion_producto_formulario);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final UsuarioParametros usuarioParametros = USUARIO_ACTUAL.getParametrosUsuarioActual();
 
         declaroCampos();
 
         Intent myIntent = getIntent(); // gets the previously created intent
-        String idEdicion = myIntent.getStringExtra("producto_id");
+        final String idEdicion = myIntent.getStringExtra("producto_id");
 
         if(idEdicion == null){
             System.out.println("ESTADO NUEVO");
@@ -129,6 +141,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                     descripcion.setText(productoEdit.getDescripcion());
 
                     Picasso.with(getApplicationContext()).load(productoEdit.getImagen()).resize(768,768).centerCrop().into(imagenProducto);
+                    //selectTienda.setPos
                     /*selectTienda.set
                     selectProductoTipo
                     imagenProducto*/
@@ -167,12 +180,22 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                 }
                 System.out.println("EL LISTADO DE LAS TIENDAS:"+listadoDeTiendas);
                 ItemSpinnerNoPicture itemTiendaListado = new ItemSpinnerNoPicture(listadoDeTiendas, getBaseContext());
-                selectTienda.setAdapter(itemTiendaListado);
+                /*selectTienda.setAdapter(itemTiendaListado);
+
                 selectTienda.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if(estadoFormulario.equals("edicion")){
+                            System.out.println("ENTRA EN ITEM SELECTED!!!!"+position);
                             //valorComboPTienda = listadoDeTiendas.stream().filter(item -> item.get))
+
+                            for(Map map : listadoDeTiendas){
+                                if(map.get("id").equals(idEdicion)){
+                                    //valorComboPTienda
+
+                                }
+                            }
+
                         }else if(estadoFormulario.equals("nuevo")){
                             valorComboPTienda = listadoDeTiendas.get(position).get("id").toString();
                         }
@@ -181,7 +204,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
-                });
+                });*/
             }
             @Override
             public void onFailed(DatabaseError databaseError) {
@@ -209,7 +232,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                     productoTipoList.add(object);
                 }
                 ItemSpinnerNoPicture itemTiendaListado = new ItemSpinnerNoPicture(productoTipoList, getBaseContext());
-                selectProductoTipo.setAdapter(itemTiendaListado);
+                /*selectProductoTipo.setAdapter(itemTiendaListado);
                 selectProductoTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -220,7 +243,7 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
                     public void onNothingSelected(AdapterView<?> parent) {
 
                     }
-                });
+                });*/
             }
 
             @Override
@@ -271,6 +294,20 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
             }
         });
 
+        seleccionTipoProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CLICK EN EL TIPO DE PROUCTO");
+            }
+        });
+
+        seleccionTienda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CLICK ON TIENDA");
+            }
+        });
+
         //DETECTAMOS LOS CAMPOS QUE HAY QUE RELLENAR OBLIGATORIOS
         /*codigo.addTextChangedListener(new TextWatcher() {
             @Override
@@ -316,9 +353,12 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         nombre = findViewById(R.id.idNombreProductoFormulario);
         precio = findViewById(R.id.idPrecioProductoFormulario);
         descripcion = findViewById(R.id.idDescripcionProductoFormulario);
-        selectTienda = findViewById(R.id.idTiendaSelect);
-        selectProductoTipo = findViewById(R.id.idProductoTipoSelect);
+        /*selectTienda = findViewById(R.id.idTiendaSelect);
+        selectProductoTipo = findViewById(R.id.idProductoTipoSelect);*/
         imagenProducto = findViewById(R.id.idImagenProducto);
+
+        seleccionTipoProducto = findViewById(R.id.idSeleccionTipoProducto);
+        seleccionTienda = findViewById(R.id.idSeleccionTienda);
 
         //botones formulario
         /*botonGetBarCode = findViewById(R.id.idFloatigButtonGetBarCodeProducto);
@@ -423,6 +463,31 @@ public class AsociacionProductoFormulario extends AppCompatActivity {
         }else{
             buttonLogIn.setEnabled(true);
         }
+    }
+
+    private void cargarListadoProductos(ProductoController productoController, UsuarioParametros usuarioParametros) {
+        productoController.queryEquals("asociacion_id", usuarioParametros.getAcceso_asociacion_id(), new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                productoList = new ArrayList<>();
+                for(DataSnapshot element : data.getChildren()){
+                    Producto producto = element.getValue(Producto.class);
+                    productoList.add(producto);
+                }
+                ItemProductoListado item = new ItemProductoListado(productoList, getApplicationContext());
+                gridProductosPopUp.setAdapter(item);
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
