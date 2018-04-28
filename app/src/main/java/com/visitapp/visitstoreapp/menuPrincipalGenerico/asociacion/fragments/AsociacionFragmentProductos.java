@@ -155,11 +155,6 @@ public class AsociacionFragmentProductos extends Fragment {
                         startActivity(intent);
                     }
                 });
-
-
-
-
-
                 return false;
             }
         });

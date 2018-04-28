@@ -69,8 +69,14 @@ public class TiendaController {
 
     }
 
-    public void delete(Tienda tienda){
-        myRef.child(tienda.get_id()).removeValue();
+    public Boolean delete(String idTienda){
+        try {
+            myRef.child(idTienda).removeValue();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void queryEquals(String campoFiltrar, String valorEqual, final OnGetDataListener listener){

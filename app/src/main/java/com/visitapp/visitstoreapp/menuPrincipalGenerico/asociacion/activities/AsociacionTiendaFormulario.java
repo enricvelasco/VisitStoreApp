@@ -13,9 +13,13 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.UsuarioActual;
+import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
 import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
+import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
@@ -43,6 +47,8 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
     Switch permitePromocionesEd;
 
     Dialog dialogTiendaEdicion;
+
+    TiendaController tiendaController = new TiendaController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,22 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
             popUpFormularioTienda();
         }else{
             estadoFormulario = "edicion";
+            tiendaController.read(idEdicion, new OnGetDataListener() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(DataSnapshot data) {
+                    tienda = data.getValue(Tienda.class);
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         inicializarCampos();
