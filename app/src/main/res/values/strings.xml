@@ -18,4 +18,5 @@
     <string name="title_activity_asociacion_producto_formulario">AsociacionProductoFormulario
     </string>
     <string name="title_activity_usuario_visita_menu_principal">UsuarioVisitaMenuPrincipal</string>
+    <string name="title_activity_asociacion_tienda_formulario">AsociacionTiendaFormulario</string>
 </resources>

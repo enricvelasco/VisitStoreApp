@@ -49,7 +49,16 @@
         <activity
             android:name=".menuPrincipalGenerico.visita.UsuarioVisitaMenuPrincipal"
             android:label="@string/title_activity_usuario_visita_menu_principal"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".menuPrincipalGenerico.asociacion.activities.AsociacionTiendaFormulario"
+            android:label="@string/title_activity_asociacion_tienda_formulario"
+            android:parentActivityName=".menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal" />
+        </activity>
     </application>
 
 </manifest>
