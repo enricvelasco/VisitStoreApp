@@ -59,6 +59,7 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
     int SOLICITUD_PERMISO_CAMARA = 1;
     int SOLICITUD_PERMISO_READ = 101;
     int SOLICITUD_PERMISO_WRITE= 201;
+    int SOLICITUD_PERMISO_POSICIONAMIENTO= 301;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         comprobarPermisoCamara();
         comprobarPermisoRead();
         comprobarPermisoWrite();
+        comprobarPermisoLocalizacion();
 
         setContentView(R.layout.activity_asociacion_menu_principal);
 
@@ -271,6 +273,17 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
         fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
         fragmentTransaction.commit();
+    }
+
+    private void comprobarPermisoLocalizacion(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            System.out.println("TIENE PERMISO DE POSICION:::::::::::::::::::::::");
+        }else{
+            System.out.println("NO TIENE PERMISO POSICION!!!!!!!!!!!!!!!!!!!");
+            solicitarPermisoCamara(Manifest.permission.ACCESS_FINE_LOCATION, "Sin el permiso"+
+                            " no se podrá acceder al posicionamiento",
+                    SOLICITUD_PERMISO_POSICIONAMIENTO, this);
+        }
     }
 
     private void comprobarPermisoWrite(){

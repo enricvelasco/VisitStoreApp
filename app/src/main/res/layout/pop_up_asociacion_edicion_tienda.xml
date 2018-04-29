@@ -2,12 +2,15 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,14 +95,14 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/idButtonGuardarCambiosTienda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_margin="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 app:backgroundTint="@android:color/holo_green_light"
@@ -109,9 +112,11 @@
                 android:id="@+id/idCanelarCambiosTienda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:padding="10dp"
                 app:backgroundTint="@android:color/holo_orange_light"
                 app:srcCompat="@drawable/ic_cancel_white" />
         </LinearLayout>

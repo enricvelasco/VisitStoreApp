@@ -62,7 +62,7 @@ public class ItemTiendaListado extends BaseAdapter{
         nombreFiscal.setText(tienda.getNombreFiscal());
         nombreTienda.setText(tienda.getNombrePublico());
 
-        Picasso.with(context).load("https://firebasestorage.googleapis.com/v0/b/visitstoreapp.appspot.com/o/tienda%2Fbf65155f-75de-45a9-b4e0-63ee60884db6%2Flogo_store_1.jpg?alt=media&token=27194309-19ab-42a1-bbe2-c15dc0983d69").resize(200,200).centerCrop().into(imageView);
+        Picasso.with(context).load(tienda.getLogo()).resize(200,200).centerCrop().into(imageView);
 
         return convertView;
     }
