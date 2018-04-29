@@ -1,6 +1,8 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +38,7 @@ import com.squareup.picasso.Picasso;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.UsuarioActual;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentProductos;
 import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
 import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
@@ -44,6 +49,8 @@ import java.io.IOException;
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
 public class AsociacionTiendaFormulario extends AppCompatActivity {
+
+    //AIzaSyC3isf42YFY3WOe6VCZGmgDXiZon5YKn4k
     FloatingActionButton botonEdicion;
 
     TextView codigo;
@@ -79,6 +86,18 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
 
     TiendaController tiendaController = new TiendaController();
     StorageReference mStorageRef;
+
+    //----
+    private GoogleApiClient mGoogleApiClient;
+    private Location mCurrentLocation;
+
+    private final int[] MAP_TYPES = { GoogleMap.MAP_TYPE_SATELLITE,
+            GoogleMap.MAP_TYPE_NORMAL,
+            GoogleMap.MAP_TYPE_HYBRID,
+            GoogleMap.MAP_TYPE_TERRAIN,
+            GoogleMap.MAP_TYPE_NONE };
+    private int curMapTypeIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +105,14 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        //----
+        /*FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
+        fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
+        fragmentTransaction.commit();*/
+
 
         //conexion a maps
         /*GoogleApiClient apiClient = new GoogleApiClient.Builder(this)
@@ -349,17 +376,22 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-    private void updateUI(Location loc) {
-        if (loc != null) {
-            System.out.println("LATITUD: "+loc.getLatitude());
-            System.out.println("LATITUD: "+loc.getLongitude());
-            //lblLatitud.setText("Latitud: " + String.valueOf(loc.getLatitude()));
-            //lblLongitud.setText("Longitud: " + String.valueOf(loc.getLongitude()));
-        } else {
-            System.out.println("LATITUD: desconocida");
-            System.out.println("LATITUD: desconocida");
-            //lblLatitud.setText("Latitud: (desconocida)");
-            //lblLongitud.setText("Longitud: (desconocida)");
+    /*private void updateLocationUI() {
+        if (mMap == null) {
+            return;
         }
-    }
+        try {
+            if (mLocationPermissionGranted) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mLastKnownLocation = null;
+                getLocationPermission();
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }*/
 }
