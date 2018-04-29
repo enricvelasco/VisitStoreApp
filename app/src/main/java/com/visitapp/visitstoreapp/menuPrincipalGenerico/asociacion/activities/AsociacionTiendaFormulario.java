@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -84,6 +86,14 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        //conexion a maps
+        /*GoogleApiClient apiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addConnectionCallbacks(this)
+                .addApi(Location.API)
+                .build();*/
+        //-------------------
 
         Intent myIntent = getIntent();
         idEdicion = myIntent.getStringExtra("tienda_id");
@@ -337,5 +347,19 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    private void updateUI(Location loc) {
+        if (loc != null) {
+            System.out.println("LATITUD: "+loc.getLatitude());
+            System.out.println("LATITUD: "+loc.getLongitude());
+            //lblLatitud.setText("Latitud: " + String.valueOf(loc.getLatitude()));
+            //lblLongitud.setText("Longitud: " + String.valueOf(loc.getLongitude()));
+        } else {
+            System.out.println("LATITUD: desconocida");
+            System.out.println("LATITUD: desconocida");
+            //lblLatitud.setText("Latitud: (desconocida)");
+            //lblLongitud.setText("Longitud: (desconocida)");
+        }
     }
 }
