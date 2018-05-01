@@ -112,19 +112,6 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
     TiendaController tiendaController = new TiendaController();
     StorageReference mStorageRef;
 
-    //----
-    private GoogleApiClient mGoogleApiClient;
-    private Location mCurrentLocation;
-
-    private GoogleMap googleMap;
-
-    /*private final int[] MAP_TYPES = { GoogleMap.MAP_TYPE_SATELLITE,
-            GoogleMap.MAP_TYPE_NORMAL,
-            GoogleMap.MAP_TYPE_HYBRID,
-            GoogleMap.MAP_TYPE_TERRAIN,
-            GoogleMap.MAP_TYPE_NONE };
-    private int curMapTypeIndex = 0;*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +154,11 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
                     nombreComercial.setText(tienda.getNombrePublico());
                     nombreFiscal.setText(tienda.getNombreFiscal());
                     nif.setText(tienda.getNif());
-                    direccion.setText(tienda.getDireccion().toString());
+                    direccion.setText(tienda.getDireccion().direccionFormulario());
+
+                    //posicionar la direccion en el mapa
+                    direccionObj = tienda.getDireccion();
+                    arrancarMapFragment();
 
                     Picasso.with(getApplicationContext()).load(tienda.getLogo()).resize(768,768).centerCrop().into(logoTienda);
                     logoTienda.buildDrawingCache();
@@ -352,7 +343,7 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
                 nombreComercial.setText(tienda.getNombrePublico());
                 nombreFiscal.setText(tienda.getNombreFiscal());
                 nif.setText(tienda.getNif());
-                direccion.setText(tienda.getDireccion().toString());
+                direccion.setText(tienda.getDireccion().direccionFormulario());
 
                 //indicar en el mapa la direccion
                 LatLng posicion = new LatLng(direccionObj.getLatitud(), direccionObj.getLongtud());
@@ -459,25 +450,17 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         System.out.println("ON MAP READY************************************************");
 
         //LatLng sydney = new LatLng(41.372918, 2.157812);
-        LatLng sydney = new LatLng(direccionObj.getLatitud(), direccionObj.getLatitud());
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("MARCADOR"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 20));
-        setLocation(sydney);
+        LatLng posicion = new LatLng(direccionObj.getLatitud(), direccionObj.getLongtud());
+        googleMap.addMarker(new MarkerOptions().position(posicion)
+                .title(direccionObj.tituloMap()));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 10));
+        setLocation(posicion);
 
         //Barcode.GeoPoint direccion =  getLocationFromAddress("Carrer de la Mare de Déu del Remei, 23, 08004 Barcelona, España");
         //Barcode.GeoPoint direccion =  getLocationFromAddress("08004 Barcelona");
 
         /*System.out.println("LATITUD STRING::"+direccion.lat);
         System.out.println("LONGITUD STRING::"+direccion.lng);*/
-    }
-
-    private void marcarEnElMapa(LatLng posicion){
-        //LatLng sydney = new LatLng(41.372918, 2.157812);
-        googleMap.addMarker(new MarkerOptions().position(posicion)
-                .title("Marker in Sydney"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 20));
-        setLocation(posicion);
     }
 
     public void setLocation(LatLng loc) {

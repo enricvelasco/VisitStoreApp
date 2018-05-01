@@ -73,4 +73,12 @@ public class Direccion {
     public String toString() {
         return calle + ", " + numCalle + ", " + postalCode + " " + ciudad + ", " +pais;
     }
+
+    public String tituloMap(){
+        return calle+", "+numCalle;
+    }
+
+    public String direccionFormulario(){
+        return calle + ", " + numCalle + ", " + ciudad;
+    }
 }
