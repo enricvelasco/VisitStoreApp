@@ -2,10 +2,13 @@ package com.visitapp.visitstoreapp.sistema.domain.genericos;
 
 public class Direccion {
     private String calle;
-    private int numCalle;
-    private int postalCode;
+    private String numCalle;
+    private String postalCode;
     private String ciudad;
     private String pais;
+
+    private double longtud;
+    private double latitud;
 
     public Direccion() {
     }
@@ -18,19 +21,19 @@ public class Direccion {
         this.calle = calle;
     }
 
-    public int getNumCalle() {
+    public String getNumCalle() {
         return numCalle;
     }
 
-    public void setNumCalle(int numCalle) {
+    public void setNumCalle(String numCalle) {
         this.numCalle = numCalle;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -48,6 +51,22 @@ public class Direccion {
 
     public void setPais(String pais) {
         this.pais = pais;
+    }
+
+    public double getLongtud() {
+        return longtud;
+    }
+
+    public void setLongtud(double longtud) {
+        this.longtud = longtud;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
     }
 
     @Override

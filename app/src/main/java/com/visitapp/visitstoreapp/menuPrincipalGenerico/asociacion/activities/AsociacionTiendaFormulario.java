@@ -48,6 +48,7 @@ import com.visitapp.visitstoreapp.UsuarioActual;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentProductos;
 import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
+import com.visitapp.visitstoreapp.sistema.domain.genericos.Direccion;
 import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
@@ -67,6 +68,10 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
     EditText direccionCodigoPostal;
     EditText direccionCiudad;
     EditText direccionPais;
+    FloatingActionButton aceptarDireccion;
+    FloatingActionButton cancelarDireccion;
+
+    Direccion direccionObj = new Direccion();
     //---
 
     //AIzaSyC3isf42YFY3WOe6VCZGmgDXiZon5YKn4k
@@ -111,6 +116,8 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
 
+    private GoogleMap googleMap;
+
     /*private final int[] MAP_TYPES = { GoogleMap.MAP_TYPE_SATELLITE,
             GoogleMap.MAP_TYPE_NORMAL,
             GoogleMap.MAP_TYPE_HYBRID,
@@ -127,9 +134,11 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         //--------
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);*/
+
+        arrancarMapFragment();
 
         Intent myIntent = getIntent();
         idEdicion = myIntent.getStringExtra("tienda_id");
@@ -261,6 +270,9 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         direccionCodigoPostal = direccionesPopUp.findViewById(R.id.idCodigoPostalTiendaPopUp);
         direccionCiudad = direccionesPopUp.findViewById(R.id.idCiudadTiendaPopUp);
         direccionPais = direccionesPopUp.findViewById(R.id.idPaisTiendaPopUp);
+
+        aceptarDireccion = direccionesPopUp.findViewById(R.id.idButtonAplicarCambiosDireccionTienda);
+        cancelarDireccion = direccionesPopUp.findViewById(R.id.idButtonCancelarCambiosDireccionTienda);
     }
 
 
@@ -293,6 +305,35 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
             }
         });
 
+        aceptarDireccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //direccionObj = new Direccion();
+                direccionObj.setCalle(direccionCalle.getText().toString());
+                direccionObj.setNumCalle(direccionNumero.getText().toString());
+                direccionObj.setPostalCode(direccionCodigoPostal.getText().toString());
+                direccionObj.setCiudad(direccionCiudad.getText().toString());
+                direccionObj.setPais(direccionPais.getText().toString());
+
+                introducirDireccionEd.setText(direccionObj.toString());
+
+                Barcode.GeoPoint direcCoor = getLocationFromAddress(direccionObj.toString());
+                if(direcCoor != null){
+                    direccionObj.setLatitud(direcCoor.lat);
+                    direccionObj.setLongtud(direcCoor.lng);
+                }
+
+                direccionesPopUp.dismiss();
+            }
+        });
+
+        cancelarDireccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                direccionesPopUp.dismiss();
+            }
+        });
+
         botonGuardarPopUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,6 +345,7 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
                 //tienda. //introducir EMAIL
                 //tienda. //introducir TELEFONO
                 //tienda.setDireccion(direccionEd.getText().toString());
+                tienda.setDireccion(direccionObj);
                 tienda.setPermitePromociones(permitePromocionesEd.isChecked());
 
                 codigo.setText(tienda.getCodigo());
@@ -312,6 +354,10 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
                 nif.setText(tienda.getNif());
                 direccion.setText(tienda.getDireccion().toString());
 
+                //indicar en el mapa la direccion
+                LatLng posicion = new LatLng(direccionObj.getLatitud(), direccionObj.getLongtud());
+                //marcarEnElMapa(posicion);
+                arrancarMapFragment();
                 dialogTiendaEdicion.dismiss();
             }
         });
@@ -410,17 +456,28 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng sydney = new LatLng(41.372918, 2.157812);
+        System.out.println("ON MAP READY************************************************");
+
+        //LatLng sydney = new LatLng(41.372918, 2.157812);
+        LatLng sydney = new LatLng(direccionObj.getLatitud(), direccionObj.getLatitud());
         googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
+                .title("MARCADOR"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 20));
         setLocation(sydney);
 
         //Barcode.GeoPoint direccion =  getLocationFromAddress("Carrer de la Mare de Déu del Remei, 23, 08004 Barcelona, España");
-        Barcode.GeoPoint direccion =  getLocationFromAddress("08004 Barcelona");
+        //Barcode.GeoPoint direccion =  getLocationFromAddress("08004 Barcelona");
 
-        System.out.println("LATITUD STRING::"+direccion.lat);
-        System.out.println("LONGITUD STRING::"+direccion.lng);
+        /*System.out.println("LATITUD STRING::"+direccion.lat);
+        System.out.println("LONGITUD STRING::"+direccion.lng);*/
+    }
+
+    private void marcarEnElMapa(LatLng posicion){
+        //LatLng sydney = new LatLng(41.372918, 2.157812);
+        googleMap.addMarker(new MarkerOptions().position(posicion)
+                .title("Marker in Sydney"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 20));
+        setLocation(posicion);
     }
 
     public void setLocation(LatLng loc) {
@@ -477,6 +534,12 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
             e.printStackTrace();
         }
         return p1;
+    }
+
+    private void arrancarMapFragment(){
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     /*private void updateLocationUI() {
