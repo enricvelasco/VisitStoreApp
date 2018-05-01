@@ -60,6 +60,15 @@ import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
 public class AsociacionTiendaFormulario extends AppCompatActivity implements OnMapReadyCallback {
 
+    //popUp Direcciones
+    Dialog direccionesPopUp;
+    EditText direccionCalle;
+    EditText direccionNumero;
+    EditText direccionCodigoPostal;
+    EditText direccionCiudad;
+    EditText direccionPais;
+    //---
+
     //AIzaSyC3isf42YFY3WOe6VCZGmgDXiZon5YKn4k
     FloatingActionButton botonEdicion;
 
@@ -86,8 +95,9 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
     EditText nombreComercialEd;
     EditText nombreFiscalEd;
     EditText nifEd;
-    EditText direccionEd;
+    //EditText direccionEd;
     Switch permitePromocionesEd;
+    TextView introducirDireccionEd;
 
     Dialog dialogTiendaEdicion;
 
@@ -124,6 +134,7 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         Intent myIntent = getIntent();
         idEdicion = myIntent.getStringExtra("tienda_id");
         declararPopUp();
+        declararPopUpDirecciones();
         if(idEdicion == null){
             System.out.println("ESTADO NUEVO");
             estadoFormulario = "nuevo";
@@ -171,7 +182,7 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
                 nombreFiscalEd.setText(nombreFiscal.getText());
                 nifEd.setText(nif.getText());
 
-                direccionEd.setText(direccion.getText());
+                //direccionEd.setText(direccion.getText());
                 popUpFormularioTienda();
             }
         });
@@ -205,6 +216,7 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 
     private void girarImagen90() {
         try {
@@ -241,6 +253,17 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         botonEdicion = findViewById(R.id.idButtonEdicionTiendaFormulario);
     }
 
+    private void declararPopUpDirecciones() {
+        direccionesPopUp = new Dialog(AsociacionTiendaFormulario.this);
+        direccionesPopUp.setContentView(R.layout.pop_up_introducir_direccion_tienda);
+        direccionCalle = direccionesPopUp.findViewById(R.id.idCalleTiendaPopUp);
+        direccionNumero = direccionesPopUp.findViewById(R.id.idNumeroTiendaPopup);
+        direccionCodigoPostal = direccionesPopUp.findViewById(R.id.idCodigoPostalTiendaPopUp);
+        direccionCiudad = direccionesPopUp.findViewById(R.id.idCiudadTiendaPopUp);
+        direccionPais = direccionesPopUp.findViewById(R.id.idPaisTiendaPopUp);
+    }
+
+
     private void declararPopUp(){
         dialogTiendaEdicion = new Dialog(AsociacionTiendaFormulario.this);
         dialogTiendaEdicion.setContentView(R.layout.pop_up_asociacion_edicion_tienda);
@@ -250,8 +273,10 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         nifEd = dialogTiendaEdicion.findViewById(R.id.editTextFormularioTiendaNif);
         EditText emailEd = dialogTiendaEdicion.findViewById(R.id.editTextFormularioTiendaNombreFiscal);
         EditText telefonoEd = dialogTiendaEdicion.findViewById(R.id.editTextFormularioTiendaTelefono);
-        direccionEd = dialogTiendaEdicion.findViewById(R.id.editTextFormularioTiendaDireccion);
+        //direccionEd = dialogTiendaEdicion.findViewById(R.id.editTextFormularioTiendaDireccion);
         permitePromocionesEd = dialogTiendaEdicion.findViewById(R.id.switchFormularioTiendaPermitePromociones);
+
+        introducirDireccionEd = dialogTiendaEdicion.findViewById(R.id.idMontarDireccionTiendaPopUp);
     }
 
     private void popUpFormularioTienda(){
@@ -259,6 +284,14 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         FloatingActionButton botonCancelarPopUo = dialogTiendaEdicion.findViewById(R.id.idCanelarCambiosTienda);
 
         dialogTiendaEdicion.show();
+
+        introducirDireccionEd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                direccionesPopUp.show();
+
+            }
+        });
 
         botonGuardarPopUp.setOnClickListener(new View.OnClickListener() {
             @Override

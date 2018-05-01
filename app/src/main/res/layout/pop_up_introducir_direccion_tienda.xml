@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="Introducir Dirección"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/idCalleTiendaPopUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Calle"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/idNumeroTiendaPopup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Número"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/idCodigoPostalTiendaPopUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Código Postal"
+                android:inputType="textPostalAddress" />
+
+            <EditText
+                android:id="@+id/idCiudadTiendaPopUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Ciudad"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/idPaisTiendaPopUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="País"
+                android:inputType="textPersonName" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/idButtonAplicarCambiosDireccionTienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:backgroundTint="@android:color/holo_green_light"
+                app:srcCompat="@drawable/ic_ok_white" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/idButtonCancelarCambiosDireccionTienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:padding="10dp"
+                app:backgroundTint="@android:color/holo_orange_light"
+                app:srcCompat="@drawable/ic_cancel_white" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
