@@ -1,6 +1,7 @@
 package com.visitapp.visitstoreapp.sistema.domain.tiendas;
 
 import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
+import com.visitapp.visitstoreapp.sistema.domain.genericos.Direccion;
 import com.visitapp.visitstoreapp.sistema.domain.productos.Producto;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
 
@@ -18,12 +19,16 @@ public class Tienda{
     private String nombreFiscal;
     private String nombrePublico;
     private String observaciones;
-    private String direccion;
+    //private String direccion;
     private String logo;
     private String asociacion_id;
     private Boolean permitePromociones;
     private Map sectores_tienda;
     private Map productosTipo;
+    private Direccion direccion;
+    private String email;
+    private String telefono;
+
 
     private String _id = UUID.randomUUID().toString();
     private Date fechaCreacion = new Date();
@@ -72,14 +77,6 @@ public class Tienda{
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 
     public String getLogo() {
@@ -160,5 +157,29 @@ public class Tienda{
 
     public void setPermitePromociones(Boolean permitePromociones) {
         this.permitePromociones = permitePromociones;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 }

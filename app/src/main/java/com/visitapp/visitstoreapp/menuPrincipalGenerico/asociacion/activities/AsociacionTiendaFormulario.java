@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,9 +28,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,10 +53,12 @@ import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
-public class AsociacionTiendaFormulario extends AppCompatActivity {
+public class AsociacionTiendaFormulario extends AppCompatActivity implements OnMapReadyCallback {
 
     //AIzaSyC3isf42YFY3WOe6VCZGmgDXiZon5YKn4k
     FloatingActionButton botonEdicion;
@@ -91,12 +101,12 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
 
-    private final int[] MAP_TYPES = { GoogleMap.MAP_TYPE_SATELLITE,
+    /*private final int[] MAP_TYPES = { GoogleMap.MAP_TYPE_SATELLITE,
             GoogleMap.MAP_TYPE_NORMAL,
             GoogleMap.MAP_TYPE_HYBRID,
             GoogleMap.MAP_TYPE_TERRAIN,
             GoogleMap.MAP_TYPE_NONE };
-    private int curMapTypeIndex = 0;
+    private int curMapTypeIndex = 0;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,21 +116,10 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        //----
-        /*FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
-        fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
-        fragmentTransaction.commit();*/
-
-
-        //conexion a maps
-        /*GoogleApiClient apiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addConnectionCallbacks(this)
-                .addApi(Location.API)
-                .build();*/
-        //-------------------
+        //--------
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         Intent myIntent = getIntent();
         idEdicion = myIntent.getStringExtra("tienda_id");
@@ -148,7 +147,7 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
                     nombreComercial.setText(tienda.getNombrePublico());
                     nombreFiscal.setText(tienda.getNombreFiscal());
                     nif.setText(tienda.getNif());
-                    direccion.setText(tienda.getDireccion());
+                    direccion.setText(tienda.getDireccion().toString());
 
                     Picasso.with(getApplicationContext()).load(tienda.getLogo()).resize(768,768).centerCrop().into(logoTienda);
                     logoTienda.buildDrawingCache();
@@ -271,14 +270,14 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
                 tienda.setNif(nifEd.getText().toString());
                 //tienda. //introducir EMAIL
                 //tienda. //introducir TELEFONO
-                tienda.setDireccion(direccionEd.getText().toString());
+                //tienda.setDireccion(direccionEd.getText().toString());
                 tienda.setPermitePromociones(permitePromocionesEd.isChecked());
 
                 codigo.setText(tienda.getCodigo());
                 nombreComercial.setText(tienda.getNombrePublico());
                 nombreFiscal.setText(tienda.getNombreFiscal());
                 nif.setText(tienda.getNif());
-                direccion.setText(tienda.getDireccion());
+                direccion.setText(tienda.getDireccion().toString());
 
                 dialogTiendaEdicion.dismiss();
             }
@@ -374,6 +373,77 @@ public class AsociacionTiendaFormulario extends AppCompatActivity {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng sydney = new LatLng(41.372918, 2.157812);
+        googleMap.addMarker(new MarkerOptions().position(sydney)
+                .title("Marker in Sydney"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 20));
+        setLocation(sydney);
+
+        //Barcode.GeoPoint direccion =  getLocationFromAddress("Carrer de la Mare de Déu del Remei, 23, 08004 Barcelona, España");
+        Barcode.GeoPoint direccion =  getLocationFromAddress("08004 Barcelona");
+
+        System.out.println("LATITUD STRING::"+direccion.lat);
+        System.out.println("LONGITUD STRING::"+direccion.lng);
+    }
+
+    public void setLocation(LatLng loc) {
+        System.out.println("ENTRA A OBTENER DIRECCION "+loc.longitude + " - " +loc.latitude);
+        //Obtener la direccion de la calle a partir de la latitud y la longitud
+        if (loc.latitude != 0.0 && loc.longitude != 0.0) {
+            System.out.println("ENTRA::::");
+            try {
+                System.out.println("TRY::::");
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> list = geocoder.getFromLocation(
+                        loc.latitude, loc.longitude, 1);
+                System.out.println("LISTADO::::"+ list.size());
+                if (!list.isEmpty()) {
+                    Address DirCalle = list.get(0);
+                    /*mensaje2.setText("Mi direccion es: \n"
+                            + DirCalle.getAddressLine(0));*/
+                    System.out.println("LA DIRECCION DE LA CALLE ES: "+DirCalle.getAddressLine(0));
+                    //Carrer de la Mare de Déu del Remei, 23, 08004 Barcelona, España
+                }
+
+            } catch (IOException e) {
+                System.out.println("ERROR::::");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addressFromString(){
+
+    }
+
+    public Barcode.GeoPoint getLocationFromAddress(String strAddress){
+
+
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+        Barcode.GeoPoint p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress,5);
+            if (address==null) {
+                return null;
+            }
+            Address location=address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new Barcode.GeoPoint((double) (location.getLatitude()),
+                    (double) (location.getLongitude()));
+
+            return p1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return p1;
     }
 
     /*private void updateLocationUI() {
