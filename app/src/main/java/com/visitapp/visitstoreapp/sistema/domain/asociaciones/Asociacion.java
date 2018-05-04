@@ -1,6 +1,7 @@
 package com.visitapp.visitstoreapp.sistema.domain.asociaciones;
 
 import com.visitapp.visitstoreapp.VariablesGlobales;
+import com.visitapp.visitstoreapp.sistema.domain.genericos.Direccion;
 import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.Usuario;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioParametros;
@@ -22,6 +23,7 @@ public class Asociacion {
     String logo;
     //Map tiendas;
     AsociacionParametrosConfig asociacionParametrosConfig;
+    List<Direccion> direccionesLimite;
 
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
@@ -125,6 +127,14 @@ public class Asociacion {
 
     public void setUsuarioModificacion(UsuarioParametros usuarioModificacion) {
         this.usuarioModificacion = usuarioModificacion;
+    }
+
+    public List<Direccion> getDireccionesLimite() {
+        return direccionesLimite;
+    }
+
+    public void setDireccionesLimite(List<Direccion> direccionesLimite) {
+        this.direccionesLimite = direccionesLimite;
     }
 
     /*ublic Map getTiendas() {

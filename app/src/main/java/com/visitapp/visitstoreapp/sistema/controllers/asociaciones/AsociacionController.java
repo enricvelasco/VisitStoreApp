@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
@@ -73,6 +74,22 @@ public class AsociacionController {
 
     public void delete(Asociacion asociacion){
         myRef.child(asociacion.get_id()).removeValue();
+    }
+
+    public void queryEquals(String campoFiltrar, String valorEqual, final OnGetDataListener listener){
+        listener.onStart();
+        Query query = myRef.orderByChild(campoFiltrar).equalTo(valorEqual);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
     }
 }
 

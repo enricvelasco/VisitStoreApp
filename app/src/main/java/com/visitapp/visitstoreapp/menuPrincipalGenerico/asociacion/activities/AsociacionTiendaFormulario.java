@@ -500,8 +500,6 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
     }
 
     public Barcode.GeoPoint getLocationFromAddress(String strAddress){
-
-
         Geocoder coder = new Geocoder(this);
         List<Address> address;
         Barcode.GeoPoint p1 = null;

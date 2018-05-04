@@ -81,4 +81,7 @@ public class Direccion {
     public String direccionFormulario(){
         return calle + ", " + numCalle + ", " + ciudad;
     }
+    public String direccionItemPopUp(){
+        return calle + ", " + numCalle;
+    }
 }
