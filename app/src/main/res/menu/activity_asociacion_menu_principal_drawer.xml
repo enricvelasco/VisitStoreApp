@@ -14,6 +14,14 @@
                 android:title="Productos" />
         </menu>
     </item>
+    <item android:title="Configuración">
+        <menu>
+            <item
+                android:id="@+id/nav_configuracion_limites"
+                android:icon="@drawable/ic_ascociacion_menu_area_black"
+                android:title="Límites Asociación" />
+        </menu>
+    </item>
 <!--group android:checkableBehavior="single">
     <item
         android:id="@+id/nav_camera"

@@ -20,4 +20,6 @@
     <string name="title_activity_usuario_visita_menu_principal">UsuarioVisitaMenuPrincipal</string>
     <string name="title_activity_asociacion_tienda_formulario">AsociacionTiendaFormulario</string>
     <string name="GOOGLE_MAPS_API_KEY">AIzaSyC3isf42YFY3WOe6VCZGmgDXiZon5YKn4k</string>
+    <string name="title_activity_asociacion_configuracion_limites">AsociacionConfiguracionLimites
+    </string>
 </resources>

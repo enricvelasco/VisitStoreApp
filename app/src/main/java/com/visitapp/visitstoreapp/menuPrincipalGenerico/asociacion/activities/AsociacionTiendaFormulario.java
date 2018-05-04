@@ -163,6 +163,12 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
                     Picasso.with(getApplicationContext()).load(tienda.getLogo()).resize(768,768).centerCrop().into(logoTienda);
                     logoTienda.buildDrawingCache();
                     bmpLogoTienda = logoTienda.getDrawingCache();
+
+                    direccionCalle.setText(tienda.getDireccion().getCalle());
+                    direccionNumero.setText(tienda.getDireccion().getNumCalle());
+                    direccionCodigoPostal.setText(tienda.getDireccion().getPostalCode());
+                    direccionCiudad.setText(tienda.getDireccion().getCiudad());
+                    direccionPais.setText(tienda.getDireccion().getPais());
                 }
 
                 @Override
@@ -453,7 +459,7 @@ public class AsociacionTiendaFormulario extends AppCompatActivity implements OnM
         LatLng posicion = new LatLng(direccionObj.getLatitud(), direccionObj.getLongtud());
         googleMap.addMarker(new MarkerOptions().position(posicion)
                 .title(direccionObj.tituloMap()));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 10));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 17));
         setLocation(posicion);
 
         //Barcode.GeoPoint direccion =  getLocationFromAddress("Carrer de la Mare de Déu del Remei, 23, 08004 Barcelona, España");

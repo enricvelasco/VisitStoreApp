@@ -43,6 +43,7 @@ import com.squareup.picasso.Transformation;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.login.PantallaLogIn;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities.AsociacionConfiguracionLimites;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentProductos;
 import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
@@ -236,6 +237,9 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
                 fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
                 fragmentTransaction.commit();*/
                 break;
+            case R.id.nav_configuracion_limites:
+                goToConfiguracionLimites();
+                break;
         }
 
         /*if (id == R.id.nav_camera) {
@@ -273,6 +277,11 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         AsociacionFragmentProductos fragmentProductos = new AsociacionFragmentProductos();
         fragmentTransaction.replace(R.id.fragmentAsociacionPrincipal, fragmentProductos);
         fragmentTransaction.commit();
+    }
+
+    private void goToConfiguracionLimites(){
+        Intent intent = new Intent(getApplicationContext(), AsociacionConfiguracionLimites.class);
+        startActivity(intent);
     }
 
     private void comprobarPermisoLocalizacion(){

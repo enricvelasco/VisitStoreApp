@@ -60,12 +60,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal" />
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.AIzaSyAJvxjwPv8BcvyLGBvN72dx9sSFjhQwI18"
-            android:value="YOUR_API_KEY"/>
+            android:value="YOUR_API_KEY" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/GOOGLE_MAPS_API_KEY" />
+
+        <activity
+            android:name=".menuPrincipalGenerico.asociacion.activities.AsociacionConfiguracionLimites"
+            android:label="@string/title_activity_asociacion_configuracion_limites"
+            android:parentActivityName=".menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal" />
+        </activity>
     </application>
 
 </manifest>
