@@ -77,6 +77,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal" />
         </activity>
+        <activity
+            android:name=".menuPrincipalGenerico.asociacion.activities.AsociacionConfiguracionParametros"
+            android:label="@string/title_activity_asociacion_configuracion_parametros"
+            android:parentActivityName=".menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal" />
+        </activity>
     </application>
 
 </manifest>

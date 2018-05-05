@@ -17,6 +17,10 @@
     <item android:title="Configuración">
         <menu>
             <item
+                android:id="@+id/nav_configuracion_asociacion"
+                android:icon="@drawable/ic_configuracion_black"
+                android:title="Configuración Asociación" />
+            <item
                 android:id="@+id/nav_configuracion_limites"
                 android:icon="@drawable/ic_ascociacion_menu_area_black"
                 android:title="Límites Asociación" />

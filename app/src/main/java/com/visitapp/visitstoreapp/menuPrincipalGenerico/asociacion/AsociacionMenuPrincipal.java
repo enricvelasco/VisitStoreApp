@@ -44,6 +44,7 @@ import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.VariablesGlobales;
 import com.visitapp.visitstoreapp.login.PantallaLogIn;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities.AsociacionConfiguracionLimites;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities.AsociacionConfiguracionParametros;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.fragments.AsociacionFragmentProductos;
 import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
@@ -240,6 +241,9 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
             case R.id.nav_configuracion_limites:
                 goToConfiguracionLimites();
                 break;
+            case R.id.nav_configuracion_asociacion:
+                goToConfiguracionAsociacion();
+                break;
         }
 
         /*if (id == R.id.nav_camera) {
@@ -259,6 +263,11 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void goToConfiguracionAsociacion() {
+        Intent intent = new Intent(getApplicationContext(), AsociacionConfiguracionParametros.class);
+        startActivity(intent);
     }
 
     private void goToFragmentTiendasListado() {
