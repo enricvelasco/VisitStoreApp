@@ -147,10 +147,10 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
 
             @Override
             public void onSuccess(DataSnapshot data) {
-                Asociacion recu = data.getValue(Asociacion.class);
+                //Asociacion recu = data.getValue(Asociacion.class);
                 //nombre.setText(recu.getNombre());
-                direccion.setText(recu.getDireccion().direccionFormulario());
-                telefono.setText("...");
+                /*direccion.setText(recu.getDireccion().direccionFormulario());
+                telefono.setText("...");*/
             }
 
             @Override
