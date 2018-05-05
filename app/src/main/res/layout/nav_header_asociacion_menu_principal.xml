@@ -21,34 +21,42 @@
         android:contentDescription="@string/nav_header_desc"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
-    <TextView
-        android:id="@+id/idNombreAsociacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_alignTop="@+id/idImagenCartaProducto"
-        android:layout_toEndOf="@+id/idImagenCartaProducto"
-        android:paddingLeft="5dp"
-        android:text="Nombre"
-        android:textSize="12sp" />
+        android:layout_toEndOf="@+id/idImagenCartaProducto">
 
-    <TextView
-        android:id="@+id/idDireccionAsociacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/idImagenCartaProducto"
-        android:paddingLeft="5dp"
-        android:text="Direccion"
-        android:textSize="10sp" />
+        <TextView
+            android:id="@+id/idNombreAsociacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/idImagenCartaProducto"
+            android:layout_toEndOf="@+id/idImagenCartaProducto"
+            android:paddingLeft="5dp"
+            android:text="Nombre"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/idTelefonoAsociacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/idImagenCartaProducto"
-        android:layout_toEndOf="@+id/idImagenCartaProducto"
-        android:paddingLeft="5dp"
-        android:text="Telefono"
-        android:textSize="10sp" />
+        <TextView
+            android:id="@+id/idDireccionAsociacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/idImagenCartaProducto"
+            android:paddingLeft="5dp"
+            android:text="Direccion"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/idTelefonoAsociacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/idImagenCartaProducto"
+            android:layout_toEndOf="@+id/idImagenCartaProducto"
+            android:paddingLeft="5dp"
+            android:text="Telefono"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </RelativeLayout>

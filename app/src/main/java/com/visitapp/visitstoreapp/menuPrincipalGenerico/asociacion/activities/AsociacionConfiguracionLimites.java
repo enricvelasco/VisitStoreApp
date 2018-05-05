@@ -15,7 +15,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -26,8 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.adapter.ItemDireccionesListado;
 import com.visitapp.visitstoreapp.sistema.controllers.asociaciones.AsociacionController;
+import com.visitapp.visitstoreapp.sistema.controllers.tiendas.TiendaController;
 import com.visitapp.visitstoreapp.sistema.domain.asociaciones.Asociacion;
 import com.visitapp.visitstoreapp.sistema.domain.genericos.Direccion;
+import com.visitapp.visitstoreapp.sistema.domain.tiendas.Tienda;
 import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 import com.visitapp.visitstoreapp.sistema.services.GeneralServices;
 
@@ -48,6 +52,8 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
     Dialog dialogCrearDireccion;
     AsociacionController asociacionController = new AsociacionController();
     Asociacion asociacion = new Asociacion();
+    TiendaController tiendaController = new TiendaController();
+    List<Tienda> listadoTiendasAsociacion = new ArrayList<>();
 
     //PopUp
     FloatingActionButton botonNuevaDireccion;
@@ -205,6 +211,30 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
             public void onSuccess(DataSnapshot data) {
                 asociacion = data.getValue(Asociacion.class);
                 //System.out.println("ASOCIACION DATOS:::"+asociacion.get_id()+" - "+asociacion.getNombre());
+                cargarTiendasAsociacion();
+                //arrancarMapFragment();
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void cargarTiendasAsociacion() {
+        tiendaController.queryEquals("asociacion_id", USUARIO_ACTUAL.getParametrosUsuarioActual().getAcceso_asociacion_id(), new OnGetDataListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                for(DataSnapshot item : data.getChildren()){
+                    Tienda tienda = item.getValue(Tienda.class);
+                    listadoTiendasAsociacion.add(tienda);
+                }
                 arrancarMapFragment();
             }
 
@@ -254,12 +284,24 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
 
         Polygon polygon1 = googleMap.addPolygon(options);
 
-
+        //Marcadores de las tiendas
+        for(Tienda tienda : listadoTiendasAsociacion){
+            System.out.println("RECORRE TIENDAS");
+            LatLng posicion = new LatLng(tienda.getDireccion().getLatitud(), tienda.getDireccion().getLongtud());
+            googleMap.addMarker(new MarkerOptions()
+                    .position(posicion)
+                    .title(tienda.getNombrePublico())
+                    .snippet(tienda.getDireccion().direccionItemPopUp())
+                    /*.flat(true)*/
+                    /*.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_asociacion_menu_tiendas))*/
+                    /*.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))*/);
+        }
 
 // Store a data object with the polygon, used here to indicate an arbitrary type.
         //polygon1.setTag("alpha");
-        polygon1.setFillColor(0x3F00FF00);
-        polygon1.setStrokeColor(0xffF57F17);
+        polygon1.setFillColor(0x3F00FF00);//color contenido area
+        polygon1.setStrokeColor(0x3F00FF00);//color contenido borde
+        //polygon1.setStrokeColor(0xffF57F17);
 
         // Position the map's camera near Alice Springs in the center of Australia,
         // and set the zoom factor so most of Australia shows on the screen.

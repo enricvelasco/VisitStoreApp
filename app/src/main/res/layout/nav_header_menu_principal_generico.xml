@@ -29,7 +29,7 @@
         android:layout_toEndOf="@+id/idImagenCartaProducto"
         android:paddingLeft="5dp"
         android:text="Nombre"
-        android:textSize="12sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/idDireccionMenuInfo"
@@ -39,7 +39,7 @@
         android:layout_toEndOf="@+id/idImagenCartaProducto"
         android:paddingLeft="5dp"
         android:text="Direccion"
-        android:textSize="10sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/idTelefonoMenuInfo"
@@ -49,6 +49,6 @@
         android:layout_toEndOf="@+id/idImagenCartaProducto"
         android:paddingLeft="5dp"
         android:text="Telefono"
-        android:textSize="10sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>
