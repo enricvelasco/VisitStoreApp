@@ -18,12 +18,14 @@ public class Asociacion {
     String nombre;
     String observaciones;
     String distrito_id;
-    String direccion;
     String telefono;
+    String email;
     String logo;
     //Map tiendas;
     AsociacionParametrosConfig asociacionParametrosConfig;
     List<Direccion> direccionesLimite;
+
+    Direccion direccion;
 
     Date fechaCreacion = new Date();
     Date fechaModificacion = new Date();
@@ -65,11 +67,19 @@ public class Asociacion {
         this.distrito_id = distrito_id;
     }
 
-    public String getDireccion() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Direccion getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
 

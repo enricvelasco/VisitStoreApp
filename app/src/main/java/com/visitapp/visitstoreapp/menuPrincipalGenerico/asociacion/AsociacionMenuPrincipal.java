@@ -149,7 +149,7 @@ public class AsociacionMenuPrincipal extends AppCompatActivity
             public void onSuccess(DataSnapshot data) {
                 Asociacion recu = data.getValue(Asociacion.class);
                 //nombre.setText(recu.getNombre());
-                direccion.setText(recu.getNombre());
+                direccion.setText(recu.getDireccion().direccionFormulario());
                 telefono.setText("...");
             }
 

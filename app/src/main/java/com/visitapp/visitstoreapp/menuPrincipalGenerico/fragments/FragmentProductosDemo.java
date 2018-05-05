@@ -164,7 +164,7 @@ public class FragmentProductosDemo extends Fragment{
         Asociacion a1 = new Asociacion();
         a1.setNombre("Associació de Comerç i Arts de la Riera Sant Miquel i Voltants");
         a1.setObservaciones("");
-        a1.setDireccion("C Riera de Sant Miquel 29");
+        //a1.setDireccion("C Riera de Sant Miquel 29");
         a1.setTelefono("635989470");
         a1.setLogo("pendiente/url");
         a1.setDistrito_id(distritoAsociacion.get_id());
@@ -174,7 +174,7 @@ public class FragmentProductosDemo extends Fragment{
         Asociacion a2 = new Asociacion();
         a2.setNombre("Associació de Comerciants Gràcia Centre");
         a2.setObservaciones("");
-        a2.setDireccion("C Bonavista 19");
+        //a2.setDireccion("C Bonavista 19");
         a2.setTelefono("609035162");
         a2.setLogo("pendiente/url");
         a2.setDistrito_id(distritoAsociacion.get_id());
@@ -184,7 +184,7 @@ public class FragmentProductosDemo extends Fragment{
         Asociacion a3 = new Asociacion();
         a3.setNombre("Associació Comerciants Travessera de Gràcia Centre i Puigmartí");
         a3.setObservaciones("");
-        a3.setDireccion("Trav Gràcia 191");
+        //a3.setDireccion("Trav Gràcia 191");
         a3.setTelefono("932135604");
         a3.setLogo("pendiente/url");
         a3.setDistrito_id(distritoAsociacion.get_id());
@@ -195,7 +195,7 @@ public class FragmentProductosDemo extends Fragment{
         Asociacion a5 = new Asociacion();
         a5.setNombre("Associació de Comerciants Torrijos La Nova de Baix");
         a5.setObservaciones("");
-        a5.setDireccion(" C Torrijos 28");
+        //a5.setDireccion(" C Torrijos 28");
         a5.setTelefono("");
         a5.setLogo("pendiente/url");
         a5.setDistrito_id(distritoAsociacion.get_id());
@@ -206,7 +206,7 @@ public class FragmentProductosDemo extends Fragment{
         Asociacion a4 = new Asociacion();
         a4.setNombre("Associació de Comerciants de Travessera de Dalt");
         a4.setObservaciones("");
-        a4.setDireccion("Trav Dalt 40");
+        //a4.setDireccion("Trav Dalt 40");
         a4.setTelefono("606608669");
         a4.setLogo("pendiente/url");
         a4.setDistrito_id(distritoAsociacion.get_id());
