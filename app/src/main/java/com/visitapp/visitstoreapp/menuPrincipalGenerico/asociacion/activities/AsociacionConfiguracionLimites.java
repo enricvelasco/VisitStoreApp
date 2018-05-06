@@ -1,6 +1,7 @@
 package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
@@ -36,7 +39,9 @@ import com.visitapp.visitstoreapp.sistema.interfaces.OnGetDataListener;
 import com.visitapp.visitstoreapp.sistema.services.GeneralServices;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.visitapp.visitstoreapp.login.PantallaLogIn.USUARIO_ACTUAL;
 
@@ -277,13 +282,16 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
                         new LatLng(-37.813, 144.962),
                         new LatLng(-34.928, 138.599)));*/
         //LatLng centrar = new LatLng();
+
         PolygonOptions options = new PolygonOptions().clickable(true);
-        for(Direccion direccion : asociacion.getDireccionesLimite()){
+        //Asigna direcciones Limite
+        /*for(Direccion direccion : asociacion.getDireccionesLimite()){
             options.add(new LatLng(direccion.getLatitud(), direccion.getLongtud()));
-        }
+        }*/
 
-        Polygon polygon1 = googleMap.addPolygon(options);
+        LatLng centro = calcularCentro();
 
+        //asigna como area las direcciones de las tiendas
         //Marcadores de las tiendas
         for(Tienda tienda : listadoTiendasAsociacion){
             System.out.println("RECORRE TIENDAS");
@@ -295,8 +303,26 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
                     /*.flat(true)*/
                     /*.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_asociacion_menu_tiendas))*/
                     /*.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))*/);
+            options.add(new LatLng(tienda.getDireccion().getLatitud(), tienda.getDireccion().getLongtud()));
+
+            /*googleMap.addCircle(new CircleOptions()
+                    .center(new LatLng(tienda.getDireccion().getLatitud(), tienda.getDireccion().getLongtud()))
+                    .radius(100)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE));*/
         }
 
+        googleMap.addMarker(new MarkerOptions()
+                        .position(centro)
+                        .title("Centro")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        googleMap.addCircle(new CircleOptions()
+                .center(centro)
+                .radius(300)
+                .strokeColor(0x3F00FF00)
+                .fillColor(0x3F00FF00));
+
+        Polygon polygon1 = googleMap.addPolygon(options);
 // Store a data object with the polygon, used here to indicate an arbitrary type.
         //polygon1.setTag("alpha");
         polygon1.setFillColor(0x3F00FF00);//color contenido area
@@ -306,12 +332,38 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
         // Position the map's camera near Alice Springs in the center of Australia,
         // and set the zoom factor so most of Australia shows on the screen.
         //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-23.684, 133.903), 4));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-                asociacion.getDireccionesLimite().get(0).getLatitud(),
-                asociacion.getDireccionesLimite().get(0).getLongtud()), 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centro, 15));
 
         // Set listeners for click events.
         googleMap.setOnPolylineClickListener(this);
         googleMap.setOnPolygonClickListener(this);
+    }
+
+    private LatLng calcularCentro() {
+        //Map<String, Double> mapa = new HashMap<>();
+        double x1 = listadoTiendasAsociacion.get(0).getDireccion().getLatitud();//menor
+        double x2 = listadoTiendasAsociacion.get(0).getDireccion().getLatitud();//mayor
+
+        double y1 = listadoTiendasAsociacion.get(0).getDireccion().getLongtud();//menor
+        double y2 = listadoTiendasAsociacion.get(0).getDireccion().getLongtud();//mayor
+
+        for (Tienda tienda : listadoTiendasAsociacion){
+            if(tienda.getDireccion().getLatitud() < x1){
+                x1 = tienda.getDireccion().getLatitud();
+            }else if(tienda.getDireccion().getLatitud() > x2){
+                x2 = tienda.getDireccion().getLatitud();
+            }
+
+            if(tienda.getDireccion().getLongtud() < y1){
+                y1 = tienda.getDireccion().getLongtud();
+            }else if(tienda.getDireccion().getLongtud() > y2){
+                y2 = tienda.getDireccion().getLongtud();
+            }
+        }
+
+        double centroX = x1 + ((x2 - x1) / 2);
+        double centroY = y1 + ((y2 - y1) / 2);
+
+        return new LatLng(centroX, centroY);
     }
 }
