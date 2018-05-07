@@ -7,6 +7,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,7 +28,7 @@ import com.visitapp.visitstoreapp.R;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.visitaRegistrado.fragments.VisitaRegistradoFragmentDescubre;
 
 public class VisitaRegistradoMenuPrincipal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
     private int SOLICITUD_PERMISO_POSICIONAMIENTO = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,5 +146,26 @@ public class VisitaRegistradoMenuPrincipal extends AppCompatActivity
         VisitaRegistradoFragmentDescubre fragment = new VisitaRegistradoFragmentDescubre();
         fragmentTransaction.replace(R.id.fragmentVisitaRegistradoPrincipal, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        System.out.println("LATITUD: "+location.getLatitude());
+        System.out.println("LONGITUD :"+location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        System.out.println("PROVEEDOR GPS ACTIVADO");
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        System.out.println("PROVEEDOR GPS DESACTIVADO");
     }
 }
