@@ -2,6 +2,7 @@ package com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.activities;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -289,7 +290,7 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
             options.add(new LatLng(direccion.getLatitud(), direccion.getLongtud()));
         }*/
 
-        LatLng centro = calcularCentro();
+        Map centro = calcularCentro();
 
         //asigna como area las direcciones de las tiendas
         //Marcadores de las tiendas
@@ -312,7 +313,7 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
                     .fillColor(Color.BLUE));*/
         }
 
-        googleMap.addMarker(new MarkerOptions()
+        /*googleMap.addMarker(new MarkerOptions()
                         .position(centro)
                         .title("Centro")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
@@ -320,7 +321,8 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
                 .center(centro)
                 .radius(300)
                 .strokeColor(0x3F00FF00)
-                .fillColor(0x3F00FF00));
+                .fillColor(0x3F00FF00)
+                .clickable(true));*/
 
         Polygon polygon1 = googleMap.addPolygon(options);
 // Store a data object with the polygon, used here to indicate an arbitrary type.
@@ -332,15 +334,15 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
         // Position the map's camera near Alice Springs in the center of Australia,
         // and set the zoom factor so most of Australia shows on the screen.
         //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-23.684, 133.903), 4));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centro, 15));
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centro, 15));
 
         // Set listeners for click events.
         googleMap.setOnPolylineClickListener(this);
         googleMap.setOnPolygonClickListener(this);
     }
 
-    private LatLng calcularCentro() {
-        //Map<String, Double> mapa = new HashMap<>();
+    private Map calcularCentro() {
+        Map<String, Double> mapa = new HashMap<>();
         double x1 = listadoTiendasAsociacion.get(0).getDireccion().getLatitud();//menor
         double x2 = listadoTiendasAsociacion.get(0).getDireccion().getLatitud();//mayor
 
@@ -364,6 +366,47 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
         double centroX = x1 + ((x2 - x1) / 2);
         double centroY = y1 + ((y2 - y1) / 2);
 
-        return new LatLng(centroX, centroY);
+        double distanciaMax = encontrarDistanciaMaxima();
+
+        mapa.put("maxDistance", distanciaMax);
+        mapa.put("centroX", centroX);
+        mapa.put("centroY", centroY);
+
+        return mapa;
+    }
+
+    private Location crearLocation(Tienda tienda){
+        Location locationA = new Location(tienda.getNombrePublico());
+        locationA.setLongitude(tienda.getDireccion().getLatitud());
+        locationA.setLatitude(tienda.getDireccion().getLongtud());
+        return locationA;
+    }
+
+    private double encontrarDistanciaMaxima() {
+        double distancia;
+        if(listadoTiendasAsociacion.size() > 1){
+            Location locationA = crearLocation(listadoTiendasAsociacion.get(0));
+            Location locationB = crearLocation(listadoTiendasAsociacion.get(1));
+            distancia = locationA.distanceTo(locationB);
+        }else{
+            distancia = 0.0;
+        }
+
+        /*double distanciaMax = LatLng(
+                listadoTiendasAsociacion.get(0).getDireccion().getLongtud(),
+                listadoTiendasAsociacion.get(0).getDireccion().getLatitud()).*/
+
+        for (Tienda tienda : listadoTiendasAsociacion){
+            Location location1 = crearLocation(tienda);
+            for (Tienda tienda2 : listadoTiendasAsociacion){
+                Location location2 = crearLocation(tienda2);
+                double distancia2 = location1.distanceTo(location2);
+                if(distancia2 > distancia){
+                    distancia = distancia2;
+                }
+            }
+
+        }
+        return distancia;
     }
 }
