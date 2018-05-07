@@ -25,4 +25,6 @@
     <string name="title_activity_asociacion_configuracion_parametros">
         AsociacionConfiguracionParametros
     </string>
+    <string name="title_activity_visita_registrado_menu_principal">VisitaRegistradoMenuPrincipal
+    </string>
 </resources>

@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.visitapp.visitstoreapp.UsuarioActual;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.asociacion.AsociacionMenuPrincipal;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.visita.UsuarioVisitaMenuPrincipal;
+import com.visitapp.visitstoreapp.menuPrincipalGenerico.visitaRegistrado.VisitaRegistradoMenuPrincipal;
 import com.visitapp.visitstoreapp.sistema.controllers.usuarios.UsuarioParametrosController;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.Usuario;
 import com.visitapp.visitstoreapp.sistema.domain.usuarios.UsuarioNiveles;
@@ -258,6 +259,9 @@ public class PantallaLogIn extends Activity implements
                             break;
                         case 4:
                             System.out.println("CONECTADO COMO USUARIO REGISTRADO");
+                            //acceso a perfil propio de usuario
+                            Intent b = new Intent(getApplicationContext(), VisitaRegistradoMenuPrincipal.class);
+                            startActivity(b);
                             break;
                         case 5:
                             System.out.println("CONECTADO COMO USUARIO VISITA");
