@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -23,13 +24,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.visitapp.visitstoreapp.R;
+import com.visitapp.visitstoreapp.login.PantallaLogIn;
 import com.visitapp.visitstoreapp.menuPrincipalGenerico.visitaRegistrado.fragments.VisitaRegistradoFragmentDescubre;
 
 public class VisitaRegistradoMenuPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
     private int SOLICITUD_PERMISO_POSICIONAMIENTO = 100;
+    private FirebaseAuth mAuth;
+
+    double longitudeGPS, latitudeGPS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,7 @@ public class VisitaRegistradoMenuPrincipal extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        System.out.println("ARRANCA VISTA REGISTRADO");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -79,10 +87,23 @@ public class VisitaRegistradoMenuPrincipal extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        //int id = item.getItemId();
+        switch (id){
+            /*case R.id.action_configParametros:
+                System.out.println("CLICK EN CONFIGURAR PARAMETROS");
+                break;*/
+            case R.id.action_logOut:
+                System.out.println("CLICK EN LOG OUT");
+                mAuth.getInstance().signOut();
+                Intent i = new Intent(getApplicationContext(), PantallaLogIn.class);
+                startActivity(i);
+                break;
         }
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_logOut) {
+            return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -150,22 +171,45 @@ public class VisitaRegistradoMenuPrincipal extends AppCompatActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        System.out.println("LATITUD: "+location.getLatitude());
-        System.out.println("LONGITUD :"+location.getLongitude());
+        System.out.println("LOCATION CHANGE");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
+        System.out.println("STATUS CHANGED");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        System.out.println("PROVEEDOR GPS ACTIVADO");
+        System.out.println("GPS ACTIVADO");
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        System.out.println("PROVEEDOR GPS DESACTIVADO");
+        System.out.println("GPS DESACTIVADO");
     }
+
+    /*private final LocationListener locationListenerGPS = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            longitudeGPS = location.getLongitude();
+            latitudeGPS = location.getLatitude();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(VisitaRegistradoMenuPrincipal.this, "GPS Provider update", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+        }
+        @Override
+        public void onProviderDisabled(String s) {
+        }
+    };*/
+
 }

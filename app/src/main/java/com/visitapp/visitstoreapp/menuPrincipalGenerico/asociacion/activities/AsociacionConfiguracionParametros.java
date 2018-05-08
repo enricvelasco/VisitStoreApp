@@ -94,7 +94,7 @@ public class AsociacionConfiguracionParametros extends AppCompatActivity {
         distritoAsociacion.setText("distrito");
         emailAsociacion.setText(asociacion.getEmail());
         telefonoAsociacion.setText(asociacion.getTelefono());
-        direccionAsociacion.setText(asociacion.getDireccion().direccionItemPopUp());
+        //direccionAsociacion.setText(asociacion.getDireccion().direccionItemPopUp());
     }
 
 }

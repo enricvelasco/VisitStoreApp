@@ -353,16 +353,18 @@ public class AsociacionConfiguracionLimites extends AppCompatActivity implements
         double y2 = listadoTiendasAsociacion.get(0).getDireccion().getLongtud();//mayor
 
         for (Tienda tienda : listadoTiendasAsociacion){
-            if(tienda.getDireccion().getLatitud() < x1){
-                x1 = tienda.getDireccion().getLatitud();
-            }else if(tienda.getDireccion().getLatitud() > x2){
-                x2 = tienda.getDireccion().getLatitud();
-            }
+            if(tienda != null){
+                if(tienda.getDireccion().getLatitud() < x1){
+                    x1 = tienda.getDireccion().getLatitud();
+                }else if(tienda.getDireccion().getLatitud() > x2){
+                    x2 = tienda.getDireccion().getLatitud();
+                }
 
-            if(tienda.getDireccion().getLongtud() < y1){
-                y1 = tienda.getDireccion().getLongtud();
-            }else if(tienda.getDireccion().getLongtud() > y2){
-                y2 = tienda.getDireccion().getLongtud();
+                if(tienda.getDireccion().getLongtud() < y1){
+                    y1 = tienda.getDireccion().getLongtud();
+                }else if(tienda.getDireccion().getLongtud() > y2){
+                    y2 = tienda.getDireccion().getLongtud();
+                }
             }
         }
 
